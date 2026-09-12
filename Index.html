@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historia de las Infancias</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f8cbf5; 
+            --primary-color: #d870d6; 
+            --text-color: #333;
+            --card-bg: rgba(255, 255, 255, 0.55);
+            --shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+            --border-glass: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            background-image: linear-gradient(135deg, #f8cbf5 0%, #ffd1ff 100%);
+            min-height: 100vh;
+        }
+
+        /* ==== MENÚ DE NAVEGACIÓN ==== */
+        nav {
+            background: rgba(255, 255, 255, 0.4);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        nav button {
+            background-color: rgba(255, 255, 255, 0.6);
+            border: var(--border-glass);
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #555;
+            cursor: pointer;
+            padding: 8px 20px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        nav button:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+            transform: translateY(-2px);
+        }
+
+        nav button.active {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 12px rgba(216, 112, 214, 0.5);
+            border-color: var(--primary-color);
+        }
+
+        /* ==== SECCIONES Y ANIMACIONES ==== */
+        section {
+            display: none; 
+            padding: 50px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            animation: fadeIn 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+        }
+
+        section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            color: #111;
+        }
+
+        h2.subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-bottom: 50px;
+            color: #444;
+        }
+
+        /* ==== LÍNEA DE TIEMPO INTERACTIVA ==== */
+        .timeline-wrapper {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            border: var(--border-glass);
+            box-shadow: var(--shadow);
+        }
+
+        .timeline-intro {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .timeline-nav {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .timeline-nav::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .timeline-step {
+            position: relative;
+            z-index: 2;
+            background: white;
+            border: 3px solid var(--primary-color);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #333;
+        }
+
+        .timeline-step.active {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 4px 10px rgba(216, 112, 214, 0.5);
+        }
+
+        .timeline-content-box {
+            display: none;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 30px;
+            border-radius: 15px;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .timeline-content-box.active { display: block; }
+
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .info-item {
+            background: rgba(216, 112, 214, 0.15);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .info-item h4 { margin-bottom: 5px; color: #222; font-size: 0.95rem;}
+        .info-item p { font-size: 0.9rem; color: #444; }
+        
+        /* ==== NUESTROS RETOS ==== */
+        .retos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .reto-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: var(--border-glass);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s;
+        }
+
+        .reto-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .reto-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 10px;
+            border-radius: 15px;
+            text-transform: uppercase;
+        }
+        
+        .reto-card h3 span {
+            display: block;
+            font-size: 0.9rem;
+            color: #333;
+            margin-top: 5px;
+        }
+
+        .reto-card p {
+            color: #444;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* ==== EQUIPO ==== */
+        .equipo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .miembro {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: var(--border-glass);
+            backdrop-filter: blur(8px);
+            transition: transform 0.3s;
+        }
+
+        .miembro:hover { transform: translateY(-8px); }
+
+        .miembro img {
+            width: 100%;
+            max-width: 180px;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 6px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin: 0 auto 15px auto;
+            display: block;
+        }
+
+        .miembro h3 { font-size: 1.3rem; margin-bottom: 5px; color: #111; }
+        .miembro .rol { 
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        .miembro p { font-size: 0.9rem; line-height: 1.6; color: #444; }
+
+        /* ==== REFERENCIAS APA ==== */
+        .referencias-container {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: var(--border-glass);
+            box-shadow: var(--shadow);
+        }
+        
+        .ref-apa {
+            padding-left: 40px;
+            text-indent: -40px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            font-size: 1rem;
+            color: #222;
+        }
+
+        .ref-apa a {
+            color: var(--primary-color);
+            text-decoration: none;
+            word-break: break-all;
+        }
+        .ref-apa a:hover { text-decoration: underline; }
+
+        /* Responsividad para móviles */
+        @media (max-width: 768px) {
+            .timeline-nav { flex-direction: column; gap: 15px; }
+            .timeline-nav::before { display: none; }
+            .timeline-step { text-align: center; }
+            h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- MENÚ -->
+    <nav>
+        <button class="nav-btn active" onclick="cambiarSeccion('inicio', this)">Inicio</button>
+        <button class="nav-btn" onclick="cambiarSeccion('linea-tiempo', this)">Línea de Tiempo</button>
+        <button class="nav-btn" onclick="cambiarSeccion('retos', this)">Nuestros Retos</button>
+        <button class="nav-btn" onclick="cambiarSeccion('equipo', this)">Nuestro Equipo</button>
+        <button class="nav-btn" onclick="cambiarSeccion('referencias', this)">Referencias</button>
+    </nav>
+
+    <!-- 1. INICIO -->
+    <section id="inicio" class="active">
+        <h1>CONSTRUCCIÓN HISTÓRICA DE LAS INFANCIAS</h1>
+        <h2 class="subtitle">Una mirada a las transformaciones de las infancias a través del tiempo</h2>
+        <div class="timeline-wrapper" style="text-align: center; max-width: 800px; margin: 0 auto;">
+            <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 20px;">
+                Este sitio web tiene como propósito conocer cómo han cambiado las concepciones sobre los niños, las niñas, la niñez y las infancias a través de la historia.
+            </p>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 20px;">
+                Realizaremos un recorrido por la Edad Antigua, la Edad Media y la Edad Moderna, identificando los principales cambios sociales y culturales y su influencia en la manera de comprender la infancia.
+            </p>
+            <p style="font-size: 1.1rem; line-height: 1.8;">
+                Finalmente, reflexionaremos sobre el reconocimiento de los niños y las niñas como sujetos de derechos y sobre la importancia de estos cambios para la educación infantil.
+            </p>
+        </div>
+    </section>
+
+    <!-- 2. LÍNEA DE TIEMPO INTERACTIVA -->
+    <section id="linea-tiempo">
+        <h1>LÍNEA DE TIEMPO</h1>
+        <h2 class="subtitle">Transformaciones en las concepciones sobre las infancias</h2>
+        
+        <div class="timeline-wrapper">
+            <p class="timeline-intro">
+                <strong>¿Cómo ha cambiado la manera de comprender las infancias a través del tiempo?</strong><br>
+                Toca una de las épocas a continuación para desplegar los acontecimientos correspondientes.
+            </p>
+
+            <div class="timeline-nav">
+                <div class="timeline-step active" onclick="mostrarEpoca('antigua', this)">EDAD ANTIGUA</div>
+                <div class="timeline-step" onclick="mostrarEpoca('media', this)">EDAD MEDIA</div>
+                <div class="timeline-step" onclick="mostrarEpoca('moderna', this)">EDAD MODERNA</div>
+            </div>
+
+            <div id="antigua" class="timeline-content-box active">
+                <h3 style="text-align: center; color: var(--primary-color);">EDAD ANTIGUA (3000 a. C. - 476 d. C.)</h3>
+                <div class="timeline-grid">
+                    <div class="info-item">
+                        <h4>Contexto Social</h4>
+                        <p>Sociedades jerarquizadas.</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Contexto Cultural</h4>
+                        <p>Religión y filosofía.</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Concepción de Infancia</h4>
+                        <p>Preparación para la vida adulta.</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Autores Principales</h4>
+                        <p>Platón, Aristóteles, Quintiliano.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="media" class="timeline-content-box">
+                <h3 style="text-align: center; color: var(--primary-color);">EDAD MEDIA (Siglo V - Siglo XV)</h3>
+                <div class="timeline-grid">
+                    <div class="info-item">
+                        <h4>Contexto Social</h4>
+                        <p>Sociedad feudal.</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Contexto Cultural</h4>
+                        <p>Predominio del cristianismo.</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Concepción de Infancia</h4>
+                        <p>Dependencia del adulto.</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Autores Principales</h4>
+                        <p>San Agustín, Tomás de Aquino.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="moderna" class="timeline-content-box">
+                <h3 style="text-align: center; color: var(--primary-color);">EDAD MODERNA (Siglos XV - XVIII)</h3>
+                <div class="timeline-grid">
+                    <div class="info-item">
+                        <h4>Contexto Social</h4>
+                        <p>Estados modernos y ciudades.</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Contexto Cultural</h4>
+                        <p>Humanismo e Ilustración.</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Concepción de Infancia</h4>
+                        <p>Etapa con características propias.</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Autores Principales</h4>
+                        <p>J. A. Comenio, J. J. Rousseau.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. NUESTROS RETOS -->
+    <section id="retos">
+        <h1>NUESTROS RETOS</h1>
+        <h2 class="subtitle">Perspectivas, realidades y posibilidades de transformación</h2>
+        
+        <div class="timeline-wrapper" style="text-align: center; padding: 30px;">
+            <p style="font-size: 1.1rem; line-height: 1.6;">En este sitio web recorreremos diferentes perspectivas sobre las infancias, sus realidades y las posibilidades de transformación desde la educación infantil.</p>
+        </div>
+
+        <div class="retos-grid">
+            <div class="reto-card">
+                <h3>RETO 1<span>Construcción Histórica</span></h3>
+                <p>Conoceremos cómo ha cambiado la concepción de las infancias a través del tiempo.</p>
+            </div>
+            <div class="reto-card">
+                <h3>RETO 2<span>Infancias en Perspectiva</span></h3>
+                <p>Una mirada a las diferentes formas de comprender las infancias.</p>
+            </div>
+            <div class="reto-card">
+                <h3>RETO 3<span>Realidades y Desafíos</span></h3>
+                <p>Exploraremos las realidades y desafíos que viven las infancias.</p>
+            </div>
+            <div class="reto-card">
+                <h3>RETO 4<span>Voces para la Transformación</span></h3>
+                <p>Reflexionaremos sobre cómo contribuir a la transformación de las realidades de las infancias.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. NUESTRO EQUIPO -->
+    <section id="equipo">
+        <h1>CONOCE A NUESTRO EQUIPO</h1>
+        <h2 class="subtitle">Un equipo que aprende, comparte y construye nuevas miradas</h2>
+        
+        <div class="equipo-grid">
+            <div class="miembro">
+                <img src="Asly.jpg" alt="Asly Tatiana">
+                <h3>Asly Tatiana</h3>
+                <span class="rol">Evaluadora</span>
+                <p>Estudiante de Educación Infantil, interesada en el desarrollo integral de los niños y las niñas y en contribuir a una educación significativa e inclusiva.</p>
+            </div>
+            <div class="miembro">
+                <img src="Nayelis.jpg" alt="Nayelis Acosta">
+                <h3>Nayelis Acosta Ozuna</h3>
+                <span class="rol">Utilera</span>
+                <p>Actualmente soy estudiante de Licenciatura en Educación Infantil. Me apasiona conocer y comprender los procesos de aprendizaje de los niños y las niñas, así como seguir fortaleciendo mis conocimientos para contribuir a su formación.</p>
+            </div>
+            <div class="miembro">
+                <img src="Rosa.jpg" alt="Rosa Mejía">
+                <h3>Rosa Ycela Mejía Soraca</h3>
+                <span class="rol">Veedora de la Autenticidad</span>
+                <p>Hago parte del segundo semestre de licenciatura en pedagogía infantil. Soy una persona muy comprometida y me gusta alcanzar todas mis metas trazadas y seguir fortaleciendo todos mis conocimientos.</p>
+            </div>
+            <div class="miembro">
+                <img src="Juliana.jpg" alt="Juliana Domínguez">
+                <h3>Juliana Domínguez Ortega</h3>
+                <span class="rol">Relatora</span>
+                <p>Estudiante de Licenciatura en Educación Infantil. Me gusta aprender y aportar al desarrollo de los niños y las niñas.</p>
+            </div>
+            <div class="miembro">
+                <img src="Nayarit.jpg" alt="Nayarit">
+                <h3>Nayarit</h3>
+                <span class="rol">Dinamizadora del Proceso</span>
+                <p>Soy estudiante de Licenciatura en Educación Infantil, elegí esta carrera porque me apasiona trabajar con los niños y contribuir a su desarrollo y aprendizaje.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. REFERENCIAS -->
+    <section id="referencias">
+        <h1>REFERENCIAS BIBLIOGRÁFICAS</h1>
+        <h2 class="subtitle">Fuentes consultadas bajo formato Normas APA</h2>
+        
+        <div class="referencias-container">
+            <p class="ref-apa">
+                Benchimol, K., Bidese, M., Gentile, M., Keserman, A., Juárez, M., Sokolowicz, A., Zapiola, M., Amado, G., & Espínola, C. (2023). <em>Infancias en plural</em>. Sello Editorial Universidad Nacional de General Sarmiento. <a href="https://biblioteca-repositorio.clacso.edu.ar/bitstream/CLACSO/249094/1/Infancias-en-plural.pdf" target="_blank">https://biblioteca-repositorio.clacso.edu.ar/bitstream/CLACSO/249094/1/Infancias-en-plural.pdf</a>
+            </p>
+            <p class="ref-apa">
+                Chica, F., & Rasero, L. (2012). Construcción social de la infancia y el reconocimiento de sus competencias. <em>Itinerario Educativo: Revista de la Facultad de Educación, 26</em>(60), 75–96. <a href="https://dialnet.unirioja.es/servlet/articulo?codigo=6280191" target="_blank">https://dialnet.unirioja.es/servlet/articulo?codigo=6280191</a>
+            </p>
+            <p class="ref-apa">
+                Pedraza Ramírez, C. E., Morales Mantilla, S. M., Gómez Bohórquez, P. T., Rodríguez Bernal, Y., Pérez Ospina, J. M., & Villamizar Parada, N. J. (2022). <em>Representaciones sobre la educación infantil: Infancias en contingencia</em>. Sello Editorial UNAD. <a href="https://doi.org/10.22490/9789586518710" target="_blank">https://doi.org/10.22490/9789586518710</a>
+            </p>
+        </div>
+    </section>
+
+    <!-- SCRIPTS PARA INTERACTIVIDAD -->
+    <script>
+        function cambiarSeccion(idSeccion, botonClickeado) {
+            let secciones = document.querySelectorAll('section');
+            secciones.forEach(sec => sec.classList.remove('active'));
+            
+            let botones = document.querySelectorAll('.nav-btn');
+            botones.forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(idSeccion).classList.add('active');
+            botonClickeado.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function mostrarEpoca(idEpoca, botonClickeado) {
+            let contenidos = document.querySelectorAll('.timeline-content-box');
+            contenidos.forEach(c => c.classList.remove('active'));
+            
+            let botones = document.querySelectorAll('.timeline-step');
+            botones.forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(idEpoca).classList.add('active');
+            botonClickeado.classList.add('active');
+        }
+    </script>
+</body>
+</html>
