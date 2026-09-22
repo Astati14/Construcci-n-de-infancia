@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historia de las Infancias</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f8cbf5; 
+            --primary-color: #d870d6; 
+            --text-color: #333;
+            --card-bg: rgba(255, 255, 255, 0.65);
+            --shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+            --border-glass: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            background-image: linear-gradient(135deg, #f8cbf5 0%, #ffd1ff 100%);
+            min-height: 100vh;
+        }
+
+        /* ==== MENÚ HAMBURGUESA ==== */
+        .hamburger-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            background: rgba(255, 255, 255, 0.8);
+            border: var(--border-glass);
+            padding: 6px 10px;
+            border-radius: 10px;
+            font-size: 16px;
+            color: var(--primary-color);
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            will-change: transform;
+            transform: translateZ(0);
+        }
+
+        .hamburger-btn:hover { transform: scale(1.05); }
+
+        nav {
+            position: fixed;
+            top: 80px;
+            right: 0;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 25px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            box-shadow: -5px 5px 25px rgba(0,0,0,0.15);
+            z-index: 1000;
+            backdrop-filter: blur(15px);
+            border-radius: 20px 0 0 20px;
+            border-left: var(--border-glass);
+            border-bottom: var(--border-glass);
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transform: translateX(110%);
+            will-change: transform;
+            width: 250px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        nav.open { transform: translateX(0); }
+
+        nav button {
+            background-color: rgba(255, 255, 255, 0.7);
+            border: var(--border-glass);
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #555;
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            will-change: transform;
+            text-align: left;
+        }
+
+        nav button:hover {
+            background-color: rgba(255, 255, 255, 1);
+            transform: translateX(-5px);
+        }
+
+        nav button.active {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 12px rgba(216, 112, 214, 0.5);
+            border-color: var(--primary-color);
+        }
+
+        /* ==== SECCIONES Y ANIMACIONES ==== */
+        section {
+            display: none; 
+            padding: 60px 20px 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            animation: fadeIn 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+            will-change: transform, opacity;
+        }
+
+        section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            color: #111;
+        }
+
+        h2.subtitle {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 50px 0 30px 0;
+            color: #222;
+        }
+
+        /* ==== TÍTULO INICIO & TEXTO CAJA ==== */
+        .inicio-header {
+            max-width: 800px;
+            margin: 0 auto 15px auto;
+            text-align: center;
+        }
+        .inicio-header h2 {
+            font-size: 1.8rem;
+            color: #111;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .intro-text-box {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: var(--border-glass);
+            box-shadow: var(--shadow);
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: left;
+            transform: translateZ(0);
+        }
+        
+        .intro-text-box p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .intro-text-box p:last-child { margin-bottom: 0; }
+
+        /* ==== EQUIPO (EN PESTAÑA CONÓCENOS) ==== */
+        .equipo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .miembro {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: var(--border-glass);
+            backdrop-filter: blur(8px);
+            transition: transform 0.3s;
+            will-change: transform;
+            transform: translateZ(0);
+        }
+
+        .miembro:hover { transform: translateY(-8px) translateZ(0); }
+
+        .miembro img {
+            width: 100%;
+            max-width: 180px;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 6px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin: 0 auto 15px auto;
+            display: block;
+        }
+
+        .miembro h3 { font-size: 1.2rem; margin-bottom: 5px; color: #111; }
+        .miembro .rol { 
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        .miembro p { font-size: 0.9rem; line-height: 1.6; color: #444; }
+
+        /* ==== LÍNEA DE TIEMPO INTERACTIVA ==== */
+        .timeline-wrapper {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            border: var(--border-glass);
+            box-shadow: var(--shadow);
+            max-width: 900px;
+            margin: 0 auto;
+            transform: translateZ(0);
+        }
+
+        .timeline-nav {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .timeline-nav::before {
+             content: '';
+             position: absolute;
+             top: 0;
+             bottom: 0;
+             left: 50%;
+             width: 4px;
+             background-color: var(--primary-color);
+             transform: translateX(-50%);
+             z-index: 1;
+             opacity: 0.5;
+        }
+
+        .timeline-step {
+            background: white;
+            border: 3px solid var(--primary-color);
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+            will-change: transform;
+            color: #333;
+            text-align: center;
+            width: 80%;
+            max-width: 400px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .timeline-step.active {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(216, 112, 214, 0.6);
+        }
+
+        .timeline-content-box {
+            display: none;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 30px;
+            border-radius: 15px;
+            animation: fadeIn 0.4s ease forwards;
+            will-change: transform, opacity;
+            text-align: center;
+        }
+
+        .timeline-content-box.active { display: block; }
+
+        .epoch-title { color: var(--primary-color); font-size: 1.8rem; margin-bottom: 5px; }
+        .epoch-subtitle { color: #555; font-size: 1.1rem; font-weight: 600; margin-bottom: 30px; }
+        
+        /* ==== MINI LÍNEA DE TIEMPO INTERNA ==== */
+        .sub-timeline {
+            position: relative;
+            margin: 20px 0 40px 0;
+            padding-left: 30px;
+            border-left: 4px solid var(--primary-color);
+            text-align: left;
+        }
+
+        .sub-timeline-box {
+            background: rgba(216, 112, 214, 0.15);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            border: var(--border-glass);
+        }
+
+        .sub-timeline-box::before {
+            content: '';
+            position: absolute;
+            left: -42px;
+            top: 20px;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border: 4px solid var(--primary-color);
+            border-radius: 50%;
+        }
+
+        .sub-timeline-box p {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: #333;
+        }
+
+        /* ==== CARRUSEL DE IMÁGENES (1:1) ==== */
+        .carousel-wrapper {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
+            padding: 20px;
+            border: var(--border-glass);
+            margin-top: 20px;
+        }
+
+        .carousel {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            padding-bottom: 15px;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+        }
+
+        .carousel::-webkit-scrollbar { height: 6px; }
+        .carousel::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
+        .carousel::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 10px; }
+
+        .carousel img {
+            width: 250px;
+            aspect-ratio: 1 / 1; 
+            object-fit: cover;
+            border-radius: 15px;
+            flex-shrink: 0;
+            scroll-snap-align: center;
+            border: 4px solid white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .dots-indicator {
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 35px;
+            line-height: 0.5;
+            letter-spacing: 5px;
+            margin-top: 5px;
+            opacity: 0.7;
+        }
+
+        /* ==== PESTAÑAS VACÍAS ==== */
+        .empty-state {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 60px 20px;
+            text-align: center;
+            border: var(--border-glass);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            transform: translateZ(0);
+        }
+        
+        /* ==== REFERENCIAS APA ==== */
+        .ref-apa {
+            padding-left: 40px;
+            text-indent: -40px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            font-size: 1.05rem;
+            color: #222;
+        }
+
+        /* ================== AJUSTES PARA MÓVILES ================== */
+        @media (max-width: 768px) {
+            section { padding: 80px 10px 40px 10px; } 
+            .timeline-wrapper { padding: 20px 15px; } 
+            .timeline-content-box { padding: 20px 10px; } 
+            h1 { font-size: 1.8rem; }
+            .inicio-header h2 { font-size: 1.5rem; } 
+            .intro-text-box { padding: 25px 15px; }
+            
+            .timeline-step {
+                width: 95%; 
+                padding: 10px 15px;
+                font-size: 0.95rem;
+            }
+
+            .sub-timeline { margin-left: 10px; padding-left: 20px; }
+            .sub-timeline-box::before { left: -32px; }
+            .carousel img { width: 220px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BOTÓN MENÚ HAMBURGUESA -->
+    <button class="hamburger-btn" onclick="toggleMenu()">☰ Menú</button>
+
+    <!-- MENÚ LATERAL DESPLEGABLE CON EL ORDEN CORREGIDO -->
+    <nav id="nav-menu">
+        <button class="nav-btn active" onclick="cambiarSeccion('inicio', this)">Inicio</button>
+        <button class="nav-btn" onclick="cambiarSeccion('conocenos', this)">Conócenos</button>
+        <button class="nav-btn" onclick="cambiarSeccion('construccion-historica', this)">Construcción histórica de las infancias</button>
+        <button class="nav-btn" onclick="cambiarSeccion('perspectiva', this)">Infancias en perspectiva</button>
+        <button class="nav-btn" onclick="cambiarSeccion('realidades-desafios', this)">Comprendiendo las realidades y desafíos de la infancia</button>
+        <button class="nav-btn" onclick="cambiarSeccion('voces-transformacion', this)">Voces para la transformación de las infancias</button>
+        <button class="nav-btn" onclick="cambiarSeccion('referencias', this)">Referencias</button>
+    </nav>
+
+    <!-- ================= 1. INICIO ================= -->
+    <section id="inicio" class="active">
+        <div class="inicio-header">
+            <h2>Proyecto reto 2</h2>
+        </div>
+        <div class="intro-text-box">
+            <p>Este sitio web tiene como propósito conocer cómo han cambiado las concepciones sobre los niños, las niñas, la niñez y las infancias a través de la historia.</p>
+            <p>Realizaremos un recorrido por diferentes épocas, identificando los principales cambios sociales y culturales y su influencia en la manera de comprender la infancia.</p>
+            <p>Finalmente, reflexionaremos sobre el reconocimiento de los niños y las niñas como sujetos de derechos y sobre la importancia de estos cambios para la educación infantil.</p>
+        </div>
+    </section>
+
+    <!-- ================= 2. CONÓCENOS (PESTAÑA EQUIPO) ================= -->
+    <section id="conocenos">
+        <h1>CONOCE A NUESTRO EQUIPO</h1>
+        
+        <div class="equipo-grid">
+            <div class="miembro">
+                <img src="Nayarit.jpg" alt="Nayarit">
+                <h3>Nayarit</h3>
+                <span class="rol">Dinamizadora del Proceso</span>
+                <p>Mi nombre es Nayarit, soy estudiante de Licenciatura en Educación Infantil, elegí esta carrera porque me apasiona trabajar con los niños y contribuir a su desarrollo y aprendizaje.</p>
+            </div>
+            <div class="miembro">
+                <img src="Juliana.jpg" alt="Juliana Domínguez">
+                <h3>Juliana Domínguez Ortega</h3>
+                <span class="rol">Relatora</span>
+                <p>Soy Juliana Domínguez Ortega, estudiante de Licenciatura en Educación Infantil. Me gusta aprender y aportar al desarrollo de los niños y las niñas.</p>
+            </div>
+            <div class="miembro">
+                <img src="Nayelis.jpg" alt="Nayelis Acosta">
+                <h3>Nayelis Acosta Ozuna</h3>
+                <span class="rol">Utilera</span>
+                <p>Mi nombre es Nayelis Acosta Ozuna y actualmente soy estudiante de Licenciatura en Educación Infantil. Me apasiona conocer y comprender los procesos de aprendizaje de los niños y las niñas.</p>
+            </div>
+            <div class="miembro">
+                <img src="Rosa.jpg" alt="Rosa Mejía">
+                <h3>Rosa Ycela Mejía Soraca</h3>
+                <span class="rol">Veedor de la Autenticidad</span>
+                <p>Hola mi nombre es Rosa Ycela Mejía Soraca hago parte del segundo semestre de licenciatura en pedagogía infantil. Soy una persona muy comprometida y me gusta alcanzar todas mis metas trazadas.</p>
+            </div>
+            <div class="miembro">
+                <img src="Asly.jpg" alt="Asly Tatiana">
+                <h3>Asly Tatiana</h3>
+                <span class="rol">Evaluadora</span>
+                <p>Estudiante de Educación Infantil, interesada en el desarrollo integral de los niños y las niñas y en contribuir a una educación significativa e inclusiva.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= 3. CONSTRUCCIÓN HISTÓRICA DE LAS INFANCIAS ================= -->
+    <section id="construccion-historica">
+        <h1>Construcción histórica de las infancias</h1>
+        
+        <div class="timeline-wrapper">
+            <div class="timeline-nav">
+                <div class="timeline-step active" onclick="mostrarEpoca('epoca1', this)">EDAD ANTIGUA</div>
+                <div class="timeline-step" onclick="mostrarEpoca('epoca2', this)">EDAD MEDIA</div>
+                <div class="timeline-step" onclick="mostrarEpoca('epoca3', this)">EDAD MODERNA</div>
+                <div class="timeline-step" onclick="mostrarEpoca('reflexion', this)" style="background: var(--primary-color); color: white; border-color: white;">REFLEXIÓN CRÍTICA</div>
+            </div>
+
+            <!-- Época 1: Edad Antigua -->
+            <div id="epoca1" class="timeline-content-box active">
+                <h3 class="epoch-title">Edad Antigua</h3>
+                <p class="epoch-subtitle">Periodo: 3000 a.C. – Siglo V d.C</p>
+                
+                <div class="sub-timeline">
+                    <div class="sub-timeline-box">
+                        <p>Sociedades fuertemente jerarquizadas y patriarcales. El padre (pater familias) tenía el derecho absoluto sobre la vida de los miembros del hogar, lo que incidía en una desvalorización social de los menores.</p>
+                    </div>
+                    <div class="sub-timeline-box">
+                        <p>Prácticas como el infanticidio (especialmente de niñas o niños con discapacidad) y el abandono eran toleradas. En culturas como la espartana, el enfoque era puramente militar; en la ateniense, se priorizaba la formación intelectual, pero solo para varones libres.</p>
+                    </div>
+                    <div class="sub-timeline-box">
+                        <p>No existía el concepto de niñez. El niño era considerado una propiedad de los padres o del Estado, visto como un "adulto en miniatura" o un proyecto de ciudadano/soldado, carente de valor intrínseco en sus primeros años.</p>
+                    </div>
+                    <div class="sub-timeline-box">
+                        <p>Aristóteles y Platón. Aportaron las primeras ideas sobre la educación cívica y la formación moral del ciudadano, aunque siempre desde una perspectiva adultocéntrica y estatal.</p>
+                    </div>
+                    <div class="sub-timeline-box">
+                        <p>La instauración de la Paideia griega como primer modelo educativo estructurado.</p>
+                    </div>
+                </div>
+
+                <div class="carousel-wrapper">
+                    <div class="carousel">
+                        <img src="edadantigua1.jpg" alt="Imagen Edad Antigua 1">
+                        <img src="edadantigua2.jpg" alt="Imagen Edad Antigua 2">
+                        <img src="edadantigua3.jpg" alt="Imagen Edad Antigua 3">
+                    </div>
+                    <div class="dots-indicator">...</div>
+                </div>
+            </div>
+
+            <!-- Época 2: Edad Media -->
+            <div id="epoca2" class="timeline-content-box">
+                <h3 class="epoch-title">Edad Media</h3>
+                <p class="epoch-subtitle">Siglo V d.C. – Siglo XV d.C. (476 – 1492)</p>
+                
+                <div class="sub-timeline">
+                    <div class="sub-timeline-box">
+                        <p>Sociedad feudal y agraria. Alta mortalidad infantil que generaba un desapego emocional preventivo en las familias. Los niños se integraban rápidamente como mano de obra en el campo o en oficios.</p>
+                    </div>
+                    <div class="sub-timeline-box">
+                        <p>Fuertemente marcado por el cristianismo. Se concebía al niño como un ser portador del "pecado original", lo que justificaba una educación basada en el rigor, el castigo físico y la sumisión para "enderezar" su alma.</p>
+                    </div>
+                    <div class="sub-timeline-box">
+                        <p>El niño continuaba siendo un adulto pequeño. A partir de los 7 años, compartía ropa, juegos, trabajo y espacios sociales con los adultos, sin que se reconociera la necesidad de protección o cuidados especiales.</p>
+                    </div>
+                    <div class="sub-timeline-box">
+                        <p>San Agustín y Santo Tomás de Aquino. Sus aportes consolidaron la visión teológica de la educación, enfocada en la moralidad cristiana y la disciplina espiritual.</p>
+                    </div>
+                    <div class="sub-timeline-box">
+                        <p>Transformaciones e hitos: Surgimiento de las primeras escuelas monásticas y catedralicias, aunque restringidas al clero y la nobleza.</p>
+                    </div>
+                </div>
+
+                <div class="carousel-wrapper">
+                    <div class="carousel">
+                        <img src="edadmedia1.jpg" alt="Imagen Edad Media 1">
+                        <img src="edadmedia2.jpg" alt="Imagen Edad Media 2">
+                        <img src="edadmedia3.jpg" alt="Imagen Edad Media 3">
+                    </div>
+                    <div class="dots-indicator">...</div>
+                </div>
+            </div>
+
+            <!-- Época 3: Edad Moderna -->
+            <div id="epoca3" class="timeline-content-box">
+                <h3 class="epoch-title">Edad Moderna</h3>
+                <p class="epoch-subtitle">Siglo XV d.C. – Finales del Siglo XVIII (1492 – 1789)</p>
+                
+                <div class="sub-timeline">
+                    <div class="sub-timeline-box">
+                        <p>Ascenso de la burguesía y transformación de la familia, que pasa a ser más nuclear y privada. Se reduce la necesidad de integrar a los niños tan temprano al trabajo en las clases acomodadas.</p>
+                    </div>
+                    <div class="sub-timeline-box">
+                        <p>El Renacimiento y la Ilustración traen el Humanismo y el uso de la razón. Se empieza a valorar la educación como motor de progreso social y moral.</p>
+                    </div>
+                    <div class="sub-timeline-box">
+                        <p>Ocurre el "descubrimiento de la infancia". El niño comienza a ser visto como un ser diferente al adulto: inocente, maleable, con una naturaleza propia y necesitado de amor, cuidado y, sobre todo, escolarización.</p>
+                    </div>
+                    <div class="sub-timeline-box">
+                        <p>Juan Amos Comenio: Considerado el padre de la pedagogía, propuso una educación universal y estructurada por edades (Didáctica Magna).<br><br>Jean-Jacques Rousseau: En su obra Emilio, postuló que el niño es bueno por naturaleza y debe aprender de su propia experiencia.</p>
+                    </div>
+                    <div class="sub-timeline-box">
+                        <p>Institucionalización de la escuela. Separación del mundo infantil del mundo adulto (surgimiento de juguetes, ropa y literatura específica para niños).</p>
+                    </div>
+                </div>
+
+                <div class="carousel-wrapper">
+                    <div class="carousel">
+                        <img src="edadmoderna1.jpg" alt="Imagen Edad Moderna 1">
+                        <img src="edadmoderna2.jpg" alt="Imagen Edad Moderna 2">
+                        <img src="edadmoderna3.jpg" alt="Imagen Edad Moderna 3">
+                    </div>
+                    <div class="dots-indicator">...</div>
+                </div>
+            </div>
+
+            <!-- Reflexión Crítica -->
+            <div id="reflexion" class="timeline-content-box">
+                <h3 class="epoch-title" style="color: #111;">Reflexión Crítica</h3>
+                <div class="intro-text-box" style="margin-top: 30px;">
+                    <p>Las transformaciones históricas desde la Antigüedad hasta la Edad Moderna demuestran que la "infancia" no es un hecho natural, sino una construcción social.</p>
+                    <p>Pasar de concebir al niño como una propiedad descartable (Edad Antigua) o un adulto en miniatura (Edad Media), a reconocerlo como un ser en desarrollo que necesita cuidado y educación (Edad Moderna), fue el cimiento para que, siglos después, se consolidara el reconocimiento de los niños y niñas como Sujetos de Derechos.</p>
+                    <p>En la práctica educativa actual, comprender esta evolución es vital, ya que nos advierte sobre los peligros del adultocentrismo y nos exige mantener modelos pedagógicos donde el niño sea el protagonista activo de su aprendizaje, respetando su voz, su dignidad y sus ritmos de desarrollo, tal como lo demandan los marcos normativos contemporáneos.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ================= 4. INFANCIAS EN PERSPECTIVA ================= -->
+    <section id="perspectiva">
+        <h1>Infancias en Perspectiva</h1>
+        <div class="empty-state">
+            <p style="color: #666; font-size: 1.1rem; font-style: italic;">(Esperando por el contenido del reto 3...)</p>
+        </div>
+    </section>
+
+    <!-- ================= 5. REALIDADES Y DESAFÍOS ================= -->
+    <section id="realidades-desafios">
+        <h1>Comprendiendo las realidades y desafíos de la infancia</h1>
+        <div class="empty-state">
+            <p style="color: #666; font-size: 1.1rem; font-style: italic;">(Esperando por el contenido del reto 4...)</p>
+        </div>
+    </section>
+
+    <!-- ================= 6. VOCES PARA LA TRANSFORMACIÓN ================= -->
+    <section id="voces-transformacion">
+        <h1>Voces para la transformación de las infancias</h1>
+        <div class="empty-state">
+            <p style="color: #666; font-size: 1.1rem; font-style: italic;">(Esperando por el contenido del reto 5...)</p>
+        </div>
+    </section>
+
+    <!-- ================= 7. REFERENCIAS ================= -->
+    <section id="referencias">
+        <h1>REFERENCIAS BIBLIOGRÁFICAS</h1>
+        <div class="timeline-wrapper" style="text-align: left;">
+            <p class="ref-apa">
+                Abbagnano, N., y Visalberghi, A. (1992). <em>Historia de la pedagogía</em>. Fondo de Cultura Económica.
+            </p>
+            <p class="ref-apa">
+                Ariès, P. (1987). <em>El niño y la vida familiar en el Antiguo Régimen</em>. Taurus.
+            </p>
+            <p class="ref-apa">
+                Comenio, J. A. (1986). <em>Didáctica magna</em>. Ediciones Akal. (Obra original publicada en 1632).
+            </p>
+            <p class="ref-apa">
+                deMause, L. (1982). <em>Historia de la infancia</em>. Alianza Editorial.
+            </p>
+            <p class="ref-apa">
+                Rousseau, J.-J. (1990). <em>Emilio, o De la educación</em>. Alianza Editorial. (Obra original publicada en 1762).
+            </p>
+        </div>
+    </section>
+
+    <!-- ================= SCRIPTS ================= -->
+    <script>
+        function toggleMenu() {
+            const nav = document.getElementById('nav-menu');
+            nav.classList.toggle('open');
+        }
+
+        function cambiarSeccion(idSeccion, botonClickeado) {
+            document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(idSeccion).classList.add('active');
+            botonClickeado.classList.add('active');
+            
+            document.getElementById('nav-menu').classList.remove('open');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function mostrarEpoca(idEpoca, botonClickeado) {
+            document.querySelectorAll('.timeline-content-box').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.timeline-step').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(idEpoca).classList.add('active');
+            botonClickeado.classList.add('active');
+        }
+    </script>
+</body>
+</html>
