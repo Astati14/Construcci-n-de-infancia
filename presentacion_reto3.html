@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Perspectivas Contemporáneas de las Infancias</title>
+    
+    <!-- Tipografías de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* NUEVA PALETA: Tonos Rosas Suaves y Elegantes armónicos con la web */
+            --bg-color: #FDF6F9;       /* Fondo rosa pálido muy suave */
+            --card-bg: #FFFFFF;        
+            --primary: #A65D74;        /* Rosa vintage / malva elegante */
+            --primary-light: #E8C8D2;  /* Rosa claro decorativo */
+            --text-main: #3D2C33;      /* Texto principal oscuro con subtono cálido */
+            --text-muted: #7A636C;     /* Texto secundario */
+            --accent: #D493A7;         /* Acento rosa medio */
+            --border-color: #F0DCE3;   /* Bordes sutiles en tono rosa claro */
+            --shadow-sm: 0 4px 6px rgba(166, 93, 116, 0.05);
+            --shadow-md: 0 10px 25px rgba(166, 93, 116, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow: hidden; 
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            /* Textura sutil adaptada */
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+        }
+
+        h1, h2, h3, h4, .serif-text {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* ==== HEADER Y CONTROLES ==== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(253, 246, 249, 0.98);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .menu-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 5px;
+        }
+
+        .menu-btn span {
+            display: block;
+            width: 25px;
+            height: 2px;
+            background-color: var(--text-main);
+            transition: all 0.3s;
+        }
+
+        .slide-counter {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        .fullscreen-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+        }
+
+        .fullscreen-btn svg { width: 20px; height: 20px; fill: currentColor; }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 3px;
+            background-color: var(--border-color);
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 101;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* ==== MENÚ ÍNDICE DESPLEGABLE ==== */
+        .index-menu {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            max-width: 350px;
+            height: 100%;
+            background: var(--bg-color);
+            z-index: 1000;
+            transition: left 0.3s ease-in-out;
+            box-shadow: 5px 0 25px rgba(166, 93, 116, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; 
+        }
+
+        .index-menu.open { left: 0; }
+
+        .index-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-color);
+        }
+
+        .index-header h2 { font-size: 1.5rem; color: var(--primary); }
+
+        .close-menu-btn {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: var(--text-main);
+            cursor: pointer;
+            line-height: 1;
+            padding: 0 10px;
+        }
+
+        .index-content {
+            padding: 20px;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .index-section { margin-bottom: 20px; }
+        
+        .index-section h3 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 5px;
+        }
+
+        .index-list { list-style: none; }
+        
+        .index-list li { margin-bottom: 8px; }
+
+        .index-btn {
+            background: none;
+            border: none;
+            text-align: left;
+            width: 100%;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            cursor: pointer;
+            padding: 8px 10px;
+            border-radius: 6px;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .index-btn:hover, .index-btn.active-index {
+            background-color: rgba(166, 93, 116, 0.12);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(61, 44, 51, 0.4);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s;
+        }
+        .menu-overlay.open { opacity: 1; visibility: visible; }
+
+        /* ==== CONTENEDOR PRINCIPAL DE DIAPOSITIVAS ==== */
+        .slider-container {
+            position: absolute;
+            top: 55px; 
+            bottom: 60px; 
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease; 
+            overflow-y: auto; 
+            padding: 30px 15px; 
+            display: block; 
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 10;
+        }
+
+        .slide-content-wrapper {
+            background: var(--card-bg);
+            max-width: 900px;
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            padding: 40px;
+            border: 1px solid var(--border-color);
+            position: relative;
+            margin: 0 auto; 
+            overflow-wrap: break-word; 
+        }
+
+        .slide-content-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-top: 2px solid var(--primary-light);
+            border-right: 2px solid var(--primary-light);
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        .slide-content-wrapper::before {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            border-bottom: 2px solid var(--primary-light);
+            border-left: 2px solid var(--primary-light);
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* ==== ESTILOS DE PORTADA ==== */
+        .cover-slide { text-align: center; }
+        
+        .cover-tag {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .cover-title {
+            font-size: 3.5rem;
+            color: var(--text-main);
+            line-height: 1.2;
+            margin-bottom: 30px;
+        }
+        
+        .cover-divider {
+            width: 60px;
+            height: 3px;
+            background-color: var(--accent);
+            margin: 0 auto 30px auto;
+        }
+        
+        .cover-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            font-weight: 300;
+            margin-bottom: 30px;
+        }
+        
+        .cover-authors {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+            line-height: 1.8;
+            display: inline-block;
+        }
+        .cover-authors strong {
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+        }
+
+        /* ==== ESTILOS DE AUTOR ==== */
+        .author-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .author-name {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .author-meta {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .author-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        
+        .info-block {
+            background: rgba(253, 246, 249, 0.6);
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 3px solid var(--primary-light);
+        }
+        
+        .info-block h4 {
+            font-size: 1rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 600;
+        }
+        
+        .info-block p {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: var(--text-main);
+        }
+
+        .info-block.highlight {
+            background: var(--primary);
+            border-left: none;
+            color: white;
+            box-shadow: 0 4px 10px rgba(166, 93, 116, 0.2);
+        }
+        .info-block.highlight h4 { color: rgba(255,255,255,0.85); }
+        .info-block.highlight p { color: white; font-weight: 500; }
+
+        /* ==== ESTILOS DE CONCLUSIÓN ==== */
+        .conclusion-slide { text-align: center; }
+        .conclusion-slide .cover-divider { margin: 20px auto; }
+        .conclusion-slide p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: var(--text-main);
+            text-align: justify;
+        }
+
+        /* ==== ESTILOS DE REFERENCIAS ==== */
+        .ref-title {
+            font-size: 2rem;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .ref-list {
+            padding-left: 40px;
+            text-indent: -40px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .ref-list p { margin-bottom: 15px; overflow-wrap: break-word; }
+
+        /* ==== CONTROLES DE NAVEGACIÓN INFERIOR (ANCLADOS) ==== */
+        .nav-controls {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background: rgba(253, 246, 249, 0.98);
+            border-top: 1px solid var(--border-color);
+            z-index: 100;
+        }
+
+        .nav-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            background: var(--card-bg);
+            color: var(--text-muted);
+            border-color: var(--border-color);
+        }
+
+        /* ==== AJUSTES PARA MÓVILES PERFECTOS ==== */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 15px 10px; 
+            }
+            .slide-content-wrapper { 
+                padding: 25px 20px; 
+                width: 100%; 
+            }
+            .cover-title { font-size: 2.2rem; }
+            .author-name { font-size: 1.8rem; }
+            .author-grid { grid-template-columns: 1fr; gap: 15px; } 
+            .info-block { padding: 20px 15px; }
+            .conclusion-slide p { font-size: 1.05rem; }
+            .ref-list { padding-left: 20px; text-indent: -20px; font-size: 0.85rem;}
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Barra de progreso superior -->
+    <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Menú Índice Lateral -->
+    <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+    <div class="index-menu" id="indexMenu">
+        <div class="index-header">
+            <h2>Índice</h2>
+            <button class="close-menu-btn" onclick="toggleMenu()">×</button>
+        </div>
+        <div class="index-content">
+            <div class="index-section">
+                <h3>General</h3>
+                <ul class="index-list">
+                    <li><button class="index-btn" onclick="goToSlide(0)">1. Portada</button></li>
+                </ul>
+            </div>
+            <div class="index-section">
+                <h3>Autores</h3>
+                <ul class="index-list">
+                    <li><button class="index-btn" onclick="goToSlide(1)">2. Juan C. Amador</button></li>
+                    <li><button class="index-btn" onclick="goToSlide(2)">3. Miguel Á. Gómez</button></li>
+                    <li><button class="index-btn" onclick="goToSlide(3)">4. María V. Alzate</button></li>
+                    <li><button class="index-btn" onclick="goToSlide(4)">5. Carmen E. Pedraza</button></li>
+                    <li><button class="index-btn" onclick="goToSlide(5)">6. Sandra M. Morales</button></li>
+                    <li><button class="index-btn" onclick="goToSlide(6)">7. Ileana Enesco</button></li>
+                    <li><button class="index-btn" onclick="goToSlide(7)">8. Lourdes Gaitán</button></li>
+                    <li><button class="index-btn" onclick="goToSlide(8)">9. Yolanda Rodríguez</button></li>
+                    <li><button class="index-btn" onclick="goToSlide(9)">10. Joyce M. Pérez</button></li>
+                    <li><button class="index-btn" onclick="goToSlide(10)">11. Nini J. Villamizar</button></li>
+                </ul>
+            </div>
+            <div class="index-section">
+                <h3>Conclusiones</h3>
+                <ul class="index-list">
+                    <li><button class="index-btn" onclick="goToSlide(11)">12. C1: Comprensión</button></li>
+                    <li><button class="index-btn" onclick="goToSlide(12)">13. C2: Sujetos de Derechos</button></li>
+                    <li><button class="index-btn" onclick="goToSlide(13)">14. C3: Diversidad e Inclusión</button></li>
+                    <li><button class="index-btn" onclick="goToSlide(14)">15. C4: Contextos Sociales</button></li>
+                    <li><button class="index-btn" onclick="goToSlide(15)">16. C5: Aprendizajes</button></li>
+                </ul>
+            </div>
+            <div class="index-section">
+                <h3>Soportes</h3>
+                <ul class="index-list">
+                    <li><button class="index-btn" onclick="goToSlide(16)">17. Referencias APA</button></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header (Indicador y Menú) -->
+    <header>
+        <div class="header-left">
+            <button class="menu-btn" onclick="toggleMenu()" title="Abrir Índice">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="slide-counter" id="slideCounter">1 / 17</div>
+        </div>
+        <button class="fullscreen-btn" onclick="toggleFullScreen()" title="Pantalla Completa">
+            <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+        </button>
+    </header>
+
+    <!-- ÁREA PRINCIPAL: DIAPOSITIVAS -->
+    <div class="slider-container" id="sliderContainer">
+
+        <!-- Diapositiva 1: PORTADA -->
+        <div class="slide active">
+            <div class="slide-content-wrapper cover-slide">
+                <span class="cover-tag">Reto 3</span>
+                <h1 class="cover-title">Perspectivas Contemporáneas de las Infancias</h1>
+                <div class="cover-divider"></div>
+                <h2 class="cover-subtitle">Estudio de Autores Contemporáneos</h2>
+                <div class="cover-authors">
+                    <strong>Integrantes del Equipo</strong><br>
+                    Nayarit · Juliana Domínguez Ortega<br>
+                    Nayelis Acosta Ozuna · Rosa Ycela Mejía Soraca<br>
+                    Asly Tatiana<br><br>
+                    <span style="color: var(--text-muted);">UNAD · Licenciatura en Educación Infantil</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 2: AUTOR 1 -->
+        <div class="slide">
+            <div class="slide-content-wrapper">
+                <div class="author-header">
+                    <h2 class="author-name">Juan Carlos Amador Baquiro</h2>
+                    <span class="author-meta">2012 • Colombia</span>
+                </div>
+                <div class="author-grid">
+                    <div class="info-block">
+                        <h4>1. Principales Aportes</h4>
+                        <p>Analiza la infancia como una construcción histórica, social y cultural. Propone comprender las diferentes experiencias infantiles y las condiciones en las que viven los niños y las niñas.</p>
+                    </div>
+                    <div class="info-block">
+                        <h4>2. Aporte al Concepto</h4>
+                        <p>Reconoce a los menores como sujetos sociales cuyas experiencias están relacionadas con sus contextos históricos. Plantea que la infancia no es una experiencia igual para todos, sino que cambia según las condiciones.</p>
+                    </div>
+                    <div class="info-block">
+                        <h4>3. Incidencia Educativa/Social</h4>
+                        <p>Invita a reconocer las diferentes realidades infantiles y a reflexionar sobre las prácticas educativas y sociales.</p>
+                    </div>
+                    <div class="info-block highlight">
+                        <h4>4. ¿Cómo entiende las infancias?</h4>
+                        <p>Como experiencias sociales e históricas diversas que deben comprenderse teniendo en cuenta los contextos donde viven los niños y las niñas.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 3: AUTOR 2 -->
+        <div class="slide">
+            <div class="slide-content-wrapper">
+                <div class="author-header">
+                    <h2 class="author-name">Miguel Ángel Gómez-Mendoza</h2>
+                    <span class="author-meta">2014 • Colombia</span>
+                </div>
+                <div class="author-grid">
+                    <div class="info-block">
+                        <h4>1. Principales Aportes</h4>
+                        <p>Estudia las concepciones históricas y sociales de la infancia y las transformaciones en la manera de comprender a los niños y las niñas.</p>
+                    </div>
+                    <div class="info-block">
+                        <h4>2. Aporte al Concepto</h4>
+                        <p>Permite comprender a los niños como personas cuya posición social ha cambiado a lo largo de la historia. Contribuye a entender la infancia como una realidad influida por ideas sociales e instituciones.</p>
+                    </div>
+                    <div class="info-block">
+                        <h4>3. Incidencia Educativa/Social</h4>
+                        <p>Promueve la reflexión sobre las prácticas educativas, los derechos infantiles y las representaciones sociales de la niñez.</p>
+                    </div>
+                    <div class="info-block highlight">
+                        <h4>4. ¿Cómo entiende las infancias?</h4>
+                        <p>Desde una perspectiva histórica y social que reconoce las diferentes maneras de vivir la infancia a través del tiempo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 4: AUTOR 3 -->
+        <div class="slide">
+            <div class="slide-content-wrapper">
+                <div class="author-header">
+                    <h2 class="author-name">María Victoria Alzate-Piedrahíta</h2>
+                    <span class="author-meta">2014 • Colombia</span>
+                </div>
+                <div class="author-grid">
+                    <div class="info-block">
+                        <h4>1. Principales Aportes</h4>
+                        <p>Contribuye al análisis histórico y social de las concepciones de la infancia y de las representaciones que la sociedad construye sobre los niños.</p>
+                    </div>
+                    <div class="info-block">
+                        <h4>2. Aporte al Concepto</h4>
+                        <p>Permite reflexionar sobre cómo las ideas sociales influyen en la manera de reconocer a los niños. Ayuda a comprender que el concepto se transforma según circunstancias históricas y culturales.</p>
+                    </div>
+                    <div class="info-block">
+                        <h4>3. Incidencia Educativa/Social</h4>
+                        <p>Invita a revisar las prácticas educativas y a reconocer los derechos y las experiencias vivenciales de los niños.</p>
+                    </div>
+                    <div class="info-block highlight">
+                        <h4>4. ¿Cómo entiende las infancias?</h4>
+                        <p>Desde una perspectiva histórica y social que reconoce y valida la inmensa diversidad de las experiencias infantiles.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 5: AUTOR 4 -->
+        <div class="slide">
+            <div class="slide-content-wrapper">
+                <div class="author-header">
+                    <h2 class="author-name">Carmen Eugenia Pedraza Ramírez</h2>
+                    <span class="author-meta">2022 • Colombia</span>
+                </div>
+                <div class="author-grid">
+                    <div class="info-block">
+                        <h4>1. Principales Aportes</h4>
+                        <p>Estudia las representaciones sobre la educación infantil y las experiencias de las infancias en contextos de contingencia.</p>
+                    </div>
+                    <div class="info-block">
+                        <h4>2. Aporte al Concepto</h4>
+                        <p>Permite comprender a los niños a partir de sus relaciones y cotidianidad. Contribuye a reconocer que las infancias se viven distinto según condiciones familiares, escolares y sociales.</p>
+                    </div>
+                    <div class="info-block">
+                        <h4>3. Incidencia Educativa/Social</h4>
+                        <p>Invita a reflexionar sobre las prácticas pedagógicas y sobre la importancia vital de responder a las necesidades particulares de los niños.</p>
+                    </div>
+                    <div class="info-block highlight">
+                        <h4>4. ¿Cómo entiende las infancias?</h4>
+                        <p>Desde una perspectiva social y contextual, intrínsecamente relacionada con las experiencias infantiles y representaciones educativas.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 6: AUTOR 5 -->
+        <div class="slide">
+            <div class="slide-content-wrapper">
+                <div class="author-header">
+                    <h2 class="author-name">Sandra Milena Morales Mantilla</h2>
+                    <span class="author-meta">2022 • Colombia</span>
+                </div>
+                <div class="author-grid">
+                    <div class="info-block">
+                        <h4>1. Principales Aportes</h4>
+                        <p>Aborda las representaciones sobre la educación infantil y las experiencias de los niños y niñas en situaciones de contingencia y cambio.</p>
+                    </div>
+                    <div class="info-block">
+                        <h4>2. Aporte al Concepto</h4>
+                        <p>Destaca la importancia de reconocer sentimientos y opiniones infantiles. Contribuye a comprender las infancias a partir de las experiencias vividas en contextos familiares y sociales.</p>
+                    </div>
+                    <div class="info-block">
+                        <h4>3. Incidencia Educativa/Social</h4>
+                        <p>Invita a fortalecer el acompañamiento familiar, escuchar activamente las voces infantiles y replantear las prácticas pedagógicas.</p>
+                    </div>
+                    <div class="info-block highlight">
+                        <h4>4. ¿Cómo entiende las infancias?</h4>
+                        <p>Como experiencias diversas que deben comprenderse teniendo en cuenta obligatoriamente los contextos cotidianos de los menores.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 7: AUTOR 6 -->
+        <div class="slide">
+            <div class="slide-content-wrapper">
+                <div class="author-header">
+                    <h2 class="author-name">Ileana Enesco</h2>
+                    <span class="author-meta">2010 • Psicóloga Investigadora</span>
+                </div>
+                <div class="author-grid">
+                    <div class="info-block">
+                        <h4>1. Principales Aportes</h4>
+                        <p>Explica la evolución histórica del concepto de infancia y analiza cómo las sociedades han comprendido a los niños y niñas en diferentes épocas.</p>
+                    </div>
+                    <div class="info-block">
+                        <h4>2. Aporte al Concepto</h4>
+                        <p>Destaca la importancia de comprender características propias de la infancia para orientar su desarrollo. Las ideas sobre la infancia cambian con las creencias y condiciones de cada sociedad.</p>
+                    </div>
+                    <div class="info-block">
+                        <h4>3. Incidencia Educativa/Social</h4>
+                        <p>Invita a reflexionar sobre las prácticas de crianza en el hogar, la educación formal y el reconocimiento real de las necesidades infantiles.</p>
+                    </div>
+                    <div class="info-block highlight">
+                        <h4>4. ¿Cómo entiende las infancias?</h4>
+                        <p>Desde una perspectiva estrictamente histórica y social, considerando las transformaciones culturales y educativas de cada época particular.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 8: AUTOR 7 -->
+        <div class="slide">
+            <div class="slide-content-wrapper">
+                <div class="author-header">
+                    <h2 class="author-name">Lourdes Gaitán Muñoz</h2>
+                    <span class="author-meta">2010 • Socióloga Investigadora</span>
+                </div>
+                <div class="author-grid">
+                    <div class="info-block">
+                        <h4>1. Principales Aportes</h4>
+                        <p>Estudia las experiencias en la sociedad contemporánea y promueve la comprensión sociológica de la infancia desde la perspectiva de los propios niños.</p>
+                    </div>
+                    <div class="info-block">
+                        <h4>2. Aporte al Concepto</h4>
+                        <p>Reconoce a los niños como "actores sociales" cuyas vivencias merecen ser escuchadas. La infancia es una realidad social que se transforma junto con los cambios de la sociedad.</p>
+                    </div>
+                    <div class="info-block">
+                        <h4>3. Incidencia Educativa/Social</h4>
+                        <p>Invita a escuchar a los niños, dar valor a sus experiencias cotidianas y promover su participación activa en los espacios sociales y educativos.</p>
+                    </div>
+                    <div class="info-block highlight">
+                        <h4>4. ¿Cómo entiende las infancias?</h4>
+                        <p>Como experiencias sociales genuinas que deben analizarse considerando las condiciones de vida materiales y las perspectivas propias de los niños.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 9: AUTOR 8 -->
+        <div class="slide">
+            <div class="slide-content-wrapper">
+                <div class="author-header">
+                    <h2 class="author-name">Yolanda Rodríguez Bernal</h2>
+                    <span class="author-meta">2022 • Colombia</span>
+                </div>
+                <div class="author-grid">
+                    <div class="info-block">
+                        <h4>1. Principales Aportes</h4>
+                        <p>Estudia las representaciones sociales arraigadas sobre las infancias y la educación infantil en contextos de contingencia e incertidumbre.</p>
+                    </div>
+                    <div class="info-block">
+                        <h4>2. Aporte al Concepto</h4>
+                        <p>Permite comprender a los niños en relación directa con sus entornos. Contribuye a reconocer que existen diferentes experiencias infantiles moldeadas por las condiciones sociales.</p>
+                    </div>
+                    <div class="info-block">
+                        <h4>3. Incidencia Educativa/Social</h4>
+                        <p>Invita a analizar críticamente las prácticas educativas y a considerar las necesidades infantiles en situaciones que transforman la vida cotidiana de un momento a otro.</p>
+                    </div>
+                    <div class="info-block highlight">
+                        <h4>4. ¿Cómo entiende las infancias?</h4>
+                        <p>Desde una perspectiva netamente contextual y social, que reconoce, acepta y valora la enorme diversidad de experiencias de los menores.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 10: AUTOR 9 -->
+        <div class="slide">
+            <div class="slide-content-wrapper">
+                <div class="author-header">
+                    <h2 class="author-name">Joyce Mildred Pérez Ospina</h2>
+                    <span class="author-meta">2022 • Colombia</span>
+                </div>
+                <div class="author-grid">
+                    <div class="info-block">
+                        <h4>1. Principales Aportes</h4>
+                        <p>Aporta a la literatura académica sobre las representaciones de la educación infantil y cómo las infancias transitan y sobreviven a situaciones de contingencia.</p>
+                    </div>
+                    <div class="info-block">
+                        <h4>2. Aporte al Concepto</h4>
+                        <p>Destaca la importancia de comprender los sentimientos y relaciones. Reconoce que las infancias son diversas y dependen de las condiciones familiares y educativas que las rodean.</p>
+                    </div>
+                    <div class="info-block">
+                        <h4>3. Incidencia Educativa/Social</h4>
+                        <p>Promueve la reflexión profunda sobre el rol de la educación infantil y la importancia vital de comprender las experiencias de los niños dentro de sus ecosistemas.</p>
+                    </div>
+                    <div class="info-block highlight">
+                        <h4>4. ¿Cómo entiende las infancias?</h4>
+                        <p>Como un abanico de experiencias diversas directamente relacionadas con la calidad y naturaleza de los entornos donde viven y aprenden.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 11: AUTOR 10 -->
+        <div class="slide">
+            <div class="slide-content-wrapper">
+                <div class="author-header">
+                    <h2 class="author-name">Nini Johana Villamizar Parada</h2>
+                    <span class="author-meta">2022 • Colombia</span>
+                </div>
+                <div class="author-grid">
+                    <div class="info-block">
+                        <h4>1. Principales Aportes</h4>
+                        <p>Enfoca su estudio investigativo en desentrañar las representaciones sobre la educación inicial y las infancias inmersas en contextos de contingencia.</p>
+                    </div>
+                    <div class="info-block">
+                        <h4>2. Aporte al Concepto</h4>
+                        <p>Comprende a los niños como personas cuyas vivencias están atadas a su entorno escolar y social. Sus experiencias se transforman según las circunstancias que deban afrontar.</p>
+                    </div>
+                    <div class="info-block">
+                        <h4>3. Incidencia Educativa/Social</h4>
+                        <p>Invita a reflexionar seriamente sobre la pertinencia de las prácticas pedagógicas y la necesidad imperiosa de comprender las realidades cotidianas.</p>
+                    </div>
+                    <div class="info-block highlight">
+                        <h4>4. ¿Cómo entiende las infancias?</h4>
+                        <p>Desde una perspectiva eminentemente social y contextual, que no aísla las experiencias infantiles de las circunstancias sociopolíticas en las que se desarrollan.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 12: CONCLUSIÓN 1 -->
+        <div class="slide">
+            <div class="slide-content-wrapper conclusion-slide">
+                <h2 class="serif-text" style="font-size: 2rem; color: var(--primary);">Conclusión 1</h2>
+                <h3 style="color: var(--text-muted); margin-bottom: 10px;">Comprensión de las infancias contemporáneas</h3>
+                <div class="cover-divider"></div>
+                <p>En conclusión, los aportes de los diez autores estudiados permiten comprender que la infancia ha experimentado importantes transformaciones a lo largo de la historia y que está influenciada por factores sociales, culturales, políticos, económicos y tecnológicos. A diferencia de las concepciones tradicionales, que consideraban a los niños y las niñas principalmente como futuros adultos, las perspectivas contemporáneas los reconocen como sujetos de derechos, con identidad propia, capacidades, necesidades y formas particulares de comprender el mundo.</p>
+                <br>
+                <p>Asimismo, se reconoce que no existe una única manera de vivir la infancia, pues cada niño y niña desarrolla sus experiencias de acuerdo con su contexto familiar y social. Por esta razón, es fundamental que los docentes en formación promuevan prácticas pedagógicas inclusivas, participativas y respetuosas de la diversidad, que garanticen los derechos de la niñez y favorezcan su desarrollo integral. De esta manera, comprender las infancias contemporáneas permite reflexionar sobre la responsabilidad de la familia, la escuela y la sociedad en la construcción de entornos seguros, equitativos y enriquecedores.</p>
+            </div>
+        </div>
+
+        <!-- Diapositiva 13: CONCLUSIÓN 2 -->
+        <div class="slide">
+            <div class="slide-content-wrapper conclusion-slide">
+                <h2 class="serif-text" style="font-size: 2rem; color: var(--primary);">Conclusión 2</h2>
+                <h3 style="color: var(--text-muted); margin-bottom: 10px;">Niños y niñas como sujetos de derechos</h3>
+                <div class="cover-divider"></div>
+                <p>A partir del análisis de los diez autores contemporáneos estudiados, se comprende que la manera de entender la infancia ha cambiado a lo largo de la historia. Los niños y las niñas han dejado de ser vistos únicamente como personas que necesitan el cuidado y la orientación de los adultos, para ser reconocidos como sujetos de derechos, con identidad propia, capacidades, opiniones y formas particulares de comprender el mundo.</p>
+                <br>
+                <p>De igual manera, este análisis permite reflexionar sobre la importancia de garantizar sus derechos, escuchar sus voces y promover su participación en los diferentes espacios en los que se desarrollan. La familia, la escuela y la sociedad cumplen un papel fundamental en la protección de su dignidad, el respeto por sus diferencias y la creación de oportunidades para su desarrollo integral.</p>
+                <br>
+                <p>Finalmente, como futuras licenciadas en Educación Infantil, este aprendizaje nos invita a transformar nuestras prácticas pedagógicas, promoviendo ambientes educativos inclusivos, respetuosos y participativos, basados en la equidad y el reconocimiento activo de los niños.</p>
+            </div>
+        </div>
+
+        <!-- Diapositiva 14: CONCLUSIÓN 3 -->
+        <div class="slide">
+            <div class="slide-content-wrapper conclusion-slide">
+                <h2 class="serif-text" style="font-size: 2rem; color: var(--primary);">Conclusión 3</h2>
+                <h3 style="color: var(--text-muted); margin-bottom: 10px;">Diversidad, inclusión y equidad</h3>
+                <div class="cover-divider"></div>
+                <p>Teniendo en cuenta los aportes estudiados, comprendemos que cada niño y niña vive una infancia diferente, de acuerdo con sus experiencias, características, necesidades y contextos sociales y culturales. Estas perspectivas nos permiten reconocer la importancia de respetar la diversidad de las infancias, valorando las diferencias individuales y garantizando que todos sean reconocidos como sujetos de derechos, sin importar sus condiciones.</p>
+                <br>
+                <p>Asimismo, nos invitan a reflexionar sobre la necesidad de construir prácticas educativas inclusivas y equitativas, en las que se brinden las mismas oportunidades de aprendizaje, participación y desarrollo integral. Por esta razón, debemos promover ambientes educativos donde prevalezcan el respeto, la igualdad, la empatía y la participación, evitando cualquier forma de discriminación o exclusión para que todos logren un desarrollo pleno.</p>
+            </div>
+        </div>
+
+        <!-- Diapositiva 15: CONCLUSIÓN 4 -->
+        <div class="slide">
+            <div class="slide-content-wrapper conclusion-slide">
+                <h2 class="serif-text" style="font-size: 2rem; color: var(--primary);">Conclusión 4</h2>
+                <h3 style="color: var(--text-muted); margin-bottom: 10px;">Contextos educativos y sociales</h3>
+                <div class="cover-divider"></div>
+                <p>Los aportes de los autores contemporáneos permiten comprender que las infancias están profundamente influenciadas por los contextos familiares, educativos, sociales y culturales en los que crecen los niños y las niñas.</p>
+                <br>
+                <p>Cada uno vive experiencias diferentes que pueden favorecer o dificultar su desarrollo integral, especialmente cuando se presentan situaciones de desigualdad, exclusión, falta de oportunidades educativas o vulneración de sus derechos. Es fundamental que la familia, la escuela y la sociedad trabajen conjuntamente para brindar espacios seguros, inclusivos y participativos, donde se respeten las diferencias y se escuchen genuinamente las voces de los niños y las niñas.</p>
+                <br>
+                <p>De esta manera, se reconoce que todas las infancias merecen las mismas oportunidades para aprender, participar y desarrollarse plenamente, sin importar sus condiciones sociales, económicas o el lugar donde viven.</p>
+            </div>
+        </div>
+
+        <!-- Diapositiva 16: CONCLUSIÓN 5 -->
+        <div class="slide">
+            <div class="slide-content-wrapper conclusion-slide">
+                <h2 class="serif-text" style="font-size: 2rem; color: var(--primary);">Conclusión 5</h2>
+                <h3 style="color: var(--text-muted); margin-bottom: 10px;">Aprendizajes del grupo</h3>
+                <div class="cover-divider"></div>
+                <p>A partir del análisis de los diez autores estudiados, comprendimos que la infancia es una etapa diversa que debe entenderse teniendo en cuenta las experiencias, necesidades y contextos sociales, culturales e históricos de cada niño y niña.</p>
+                <br>
+                <p>Sus aportes nos permitieron reflexionar sobre la importancia de reconocer a los niños y las niñas como sujetos de derechos, respetar sus diferencias individuales y promover una educación inclusiva que favorezca su desarrollo integral. Las visiones adultocéntricas tradicionales deben ceder paso a un acompañamiento guiado por el respeto y la empatía.</p>
+                <br>
+                <p>Asimismo, aprendimos que, como futuros licenciados en Educación Infantil, debemos desarrollar prácticas pedagógicas sensibles, reflexivas y equitativas, que respondan a las particularidades de cada infancia y contribuyan activamente a su bienestar, aprendizaje y participación en la sociedad contemporánea.</p>
+            </div>
+        </div>
+
+        <!-- Diapositiva 17: REFERENCIAS -->
+        <div class="slide">
+            <div class="slide-content-wrapper">
+                <h2 class="serif-text ref-title">Referencias Bibliográficas</h2>
+                <div class="ref-list">
+                    <p>Amador Baquiro, J. C. (2012). Condición infantil contemporánea: hacia una epistemología de las infancias. <em>Pedagogía y Saberes</em>, (37), 73–87. https://doi.org/10.17227/01212494.37pys73.87</p>
+                    <p>Enesco, I. (2010). <em>El concepto de infancia a lo largo de la historia</em>. [Artículo]. Repositorio Institucional UNAD. pp. 3-4. https://repository.unad.edu.co/handle/10596/4865</p>
+                    <p>Gómez-Mendoza, M. Á., & Alzate-Piedrahíta, M. V. (2014). La infancia contemporánea. <em>Revista Latinoamericana de Ciencias Sociales, Niñez y Juventud</em>, 12(1), 77–89. https://doi.org/10.11600/1692715x.1213040513</p>
+                    <p>Kluwer, W. (II.). (2010). <em>Cuadernos de Pedagogía (407): La infancia hoy ¿Cómo está cambiando?</em>: (ed.). WK - Cuadernos de Pedagogía, Ser niño en el siglo XXI. pp. 14-18. https://elibronet.bibliotecavirtual.unad.edu.co/es/lc/unadwkeducacion/titulos/172687</p>
+                    <p>Pedraza Ramírez, C. E., Morales Mantilla, S. M., Gómez Bohórquez, P. T., Rodríguez Bernal, Y., Pérez Ospina, J. M., & Villamizar Parada, N. J. (2022). <em>Representaciones sobre la educación infantil: infancias en contingencia</em>. Sello Editorial UNAD. https://doi.org/10.22490/9789586518710</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Controles de Navegación Inferior -->
+    <div class="nav-controls">
+        <button class="nav-btn" id="btnPrev" onclick="changeSlide(-1)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg> Anterior
+        </button>
+        <button class="nav-btn" id="btnNext" onclick="changeSlide(1)">
+            Siguiente <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const btnPrev = document.getElementById('btnPrev');
+        const btnNext = document.getElementById('btnNext');
+        const slideCounter = document.getElementById('slideCounter');
+        const progressBar = document.getElementById('progressBar');
+        const indexMenu = document.getElementById('indexMenu');
+        const menuOverlay = document.getElementById('menuOverlay');
+        const sliderContainer = document.getElementById('sliderContainer');
+        
+        let currentSlideIndex = 0;
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        updateUI();
+
+        function changeSlide(direction) {
+            const newIndex = currentSlideIndex + direction;
+            if (newIndex >= 0 && newIndex < slides.length) {
+                goToSlide(newIndex);
+            }
+        }
+
+        function goToSlide(index) {
+            slides[currentSlideIndex].classList.remove('active');
+            
+            currentSlideIndex = index;
+            slides[currentSlideIndex].classList.add('active');
+            
+            if (indexMenu.classList.contains('open')) {
+                toggleMenu();
+            }
+            
+            updateUI();
+            slides[currentSlideIndex].scrollTop = 0;
+        }
+
+        function updateUI() {
+            btnPrev.disabled = currentSlideIndex === 0;
+            btnNext.disabled = currentSlideIndex === slides.length - 1;
+            
+            slideCounter.textContent = `${currentSlideIndex + 1} / ${slides.length}`;
+            
+            const progress = ((currentSlideIndex) / (slides.length - 1)) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            document.querySelectorAll('.index-btn').forEach((btn, idx) => {
+                if(idx === currentSlideIndex) {
+                    btn.classList.add('active-index');
+                } else {
+                    btn.classList.remove('active-index');
+                }
+            });
+        }
+
+        function toggleMenu() {
+            indexMenu.classList.toggle('open');
+            menuOverlay.classList.toggle('open');
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log(`Error: ${err.message}`);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        sliderContainer.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, {passive: true});
+
+        sliderContainer.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, {passive: true});
+
+        function handleSwipe() {
+            const swipeThreshold = 50; 
+            if (touchEndX < touchStartX - swipeThreshold) {
+                changeSlide(1); 
+            }
+            if (touchEndX > touchStartX + swipeThreshold) {
+                changeSlide(-1); 
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') changeSlide(1);
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'Escape' && indexMenu.classList.contains('open')) toggleMenu();
+        });
+    </script>
+</body>
+</html>
