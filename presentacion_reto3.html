@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <title>Perspectivas Contemporáneas de las Infancias</title>
+
+    <!-- Tipografías de Google Fonts (las mismas de la página principal) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* =========================================================
+           Presentación Reto 3 — mismos tokens que la página principal
+           Índice: 1 Tokens · 2 Base · 3 Cabecera · 4 Diapositivas
+                   5 Portada · 6 Autores · 7 Conclusiones · 8 Referencias
+                   9 Navegación · 10 Índice · 11 Responsivo/Accesibilidad
+           ========================================================= */
+
+        /* ---------- 1. TOKENS ---------- */
+        :root {
+            color-scheme: light dark;
+
+            --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+            --font-body: "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+            --bg: #fbf3fb;
+            --bg-glow-1: #f8d2f2;
+            --bg-glow-2: #ffe2d3;
+            --surface: rgba(255, 255, 255, 0.82);
+            --surface-solid: #ffffff;
+            --text: #2b2231;
+            --text-muted: #5d4f66;
+            --primary: #9b3fa8;
+            --primary-strong: #7c2d88;
+            --primary-soft: #f6e3f7;
+            --on-primary: #ffffff;
+            --accent: #ff8fb1;
+            --border: rgba(124, 45, 136, 0.16);
+            --focus: #7c2d88;
+
+            --shadow-sm: 0 1px 2px rgba(60, 20, 70, 0.06), 0 4px 12px rgba(60, 20, 70, 0.06);
+            --shadow-md: 0 2px 4px rgba(60, 20, 70, 0.05), 0 12px 32px rgba(60, 20, 70, 0.1);
+            --shadow-lg: 0 4px 8px rgba(60, 20, 70, 0.06), 0 24px 56px rgba(60, 20, 70, 0.16);
+            --shadow-primary: 0 8px 20px rgba(124, 45, 136, 0.32);
+
+            --radius-sm: 12px;
+            --radius-md: 18px;
+            --radius-lg: 26px;
+            --ease: cubic-bezier(0.22, 0.8, 0.3, 1);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #17111c;
+                --bg-glow-1: #3a1b43;
+                --bg-glow-2: #3b2418;
+                --surface: rgba(40, 29, 49, 0.82);
+                --surface-solid: #251b2d;
+                --text: #f6eef9;
+                --text-muted: #cdbcd6;
+                --primary: #d98ae3;
+                --primary-strong: #ebb4f2;
+                --primary-soft: rgba(217, 138, 227, 0.14);
+                --on-primary: #1b1220;
+                --border: rgba(217, 138, 227, 0.22);
+                --focus: #f0b8f6;
+                --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.25);
+                --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.35);
+                --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.35), 0 24px 56px rgba(0, 0, 0, 0.45);
+                --shadow-primary: 0 8px 20px rgba(217, 138, 227, 0.22);
+            }
+        }
+
+        /* ---------- 2. BASE ---------- */
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html, body { height: 100%; }
+
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            line-height: 1.65;
+            color: var(--text);
+            background: var(--bg);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background:
+                radial-gradient(48rem 30rem at 6% -10%, var(--bg-glow-1) 0%, transparent 62%),
+                radial-gradient(42rem 28rem at 100% 0%, var(--bg-glow-2) 0%, transparent 58%);
+        }
+
+        h1, h2, h3, h4, p { margin: 0; }
+        em { font-style: italic; }
+        button { font: inherit; color: inherit; }
+
+        h1, h2, h3, .serif-text { font-family: var(--font-display); }
+
+        /* ---------- 3. CABECERA ---------- */
+        .topbar {
+            position: relative;
+            z-index: 20;
+            flex: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            padding: 0.6rem clamp(0.75rem, 3vw, 1.25rem);
+            background: var(--surface);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-left { display: flex; align-items: center; gap: 0.75rem; }
+
+        .icon-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            padding: 0;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            background: var(--surface-solid);
+            color: var(--text-muted);
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            transition: background-color 0.25s var(--ease), color 0.25s var(--ease),
+                        transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+        }
+
+        .icon-btn:hover {
+            background: var(--primary-soft);
+            color: var(--primary-strong);
+            box-shadow: var(--shadow-md);
+        }
+
+        .icon-btn:active { transform: scale(0.94); }
+
+        .menu-btn { flex-direction: column; gap: 4px; }
+
+        .menu-btn span {
+            display: block;
+            width: 18px;
+            height: 2px;
+            border-radius: 2px;
+            background: currentColor;
+            transition: width 0.3s var(--ease);
+        }
+
+        .menu-btn:hover span:nth-child(2) { width: 12px; }
+
+        .fullscreen-btn svg { width: 19px; height: 19px; fill: currentColor; }
+
+        .slide-counter {
+            padding: 0.3rem 0.85rem;
+            border-radius: 999px;
+            background: var(--primary-soft);
+            border: 1px solid var(--border);
+            color: var(--primary-strong);
+            font-size: 0.88rem;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* ---------- 4. DIAPOSITIVAS ---------- */
+        .slider-container {
+            position: relative;
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        /* Cada diapositiva entra desde la derecha (siguiente) o desde la izquierda (anterior) */
+        .slide {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            padding: clamp(0.75rem, 2.5vw, 1.75rem) clamp(0.6rem, 3vw, 1.5rem);
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) transparent;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(36px);
+            outline: none;
+            transition: opacity 0.4s var(--ease), transform 0.55s var(--ease), visibility 0s linear 0.55s;
+        }
+
+        .slide.before { transform: translateX(-36px); }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: none;
+            z-index: 2;
+            transition: opacity 0.45s var(--ease) 0.05s, transform 0.55s var(--ease), visibility 0s;
+        }
+
+        .slide-content-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 880px;
+            margin: auto;
+            padding: clamp(1.25rem, 3.5vw, 2.5rem);
+            background:
+                linear-gradient(90deg, var(--primary), var(--accent)) top / 100% 5px no-repeat,
+                var(--surface-solid);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            overflow-wrap: break-word;
+        }
+
+        .slide-content-wrapper::after,
+        .slide-content-wrapper::before {
+            content: "";
+            position: absolute;
+            width: 36px;
+            height: 36px;
+            opacity: 0.45;
+            pointer-events: none;
+        }
+
+        .slide-content-wrapper::after {
+            top: 18px;
+            right: 18px;
+            border-top: 2px solid var(--primary);
+            border-right: 2px solid var(--primary);
+            border-top-right-radius: 10px;
+        }
+
+        .slide-content-wrapper::before {
+            bottom: 18px;
+            left: 18px;
+            border-bottom: 2px solid var(--primary);
+            border-left: 2px solid var(--primary);
+            border-bottom-left-radius: 10px;
+        }
+
+        /* ---------- 5. PORTADA ---------- */
+        .cover-slide { text-align: center; }
+
+        .cover-tag {
+            display: inline-block;
+            margin-bottom: 1.25rem;
+            padding: 0.35rem 1rem;
+            border-radius: 999px;
+            background: var(--primary-soft);
+            border: 1px solid var(--border);
+            color: var(--primary-strong);
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        .cover-title {
+            margin-bottom: 1.25rem;
+            font-size: clamp(1.9rem, 1.2rem + 3.6vw, 3.4rem);
+            font-weight: 700;
+            line-height: 1.12;
+            color: var(--text);
+            text-wrap: balance;
+        }
+
+        .cover-divider {
+            width: 64px;
+            height: 5px;
+            margin: 0 auto 1.5rem;
+            border-radius: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .cover-subtitle {
+            margin-bottom: 1.75rem;
+            font-family: var(--font-body);
+            font-size: clamp(1.05rem, 0.95rem + 0.6vw, 1.3rem);
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .cover-authors {
+            display: block;
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--border);
+            line-height: 1.7;
+        }
+
+        .cover-authors strong {
+            display: block;
+            margin-bottom: 0.75rem;
+            color: var(--primary-strong);
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .cover-team {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .cover-team span {
+            padding: 0.3rem 0.85rem;
+            border-radius: 999px;
+            background: var(--primary-soft);
+            border: 1px solid var(--border);
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .cover-institution {
+            display: block;
+            margin-top: 1.1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        /* ---------- 6. AUTORES ---------- */
+        .author-header {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.25rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .author-name {
+            margin-bottom: 0.5rem;
+            font-size: clamp(1.5rem, 1.1rem + 1.8vw, 2.3rem);
+            font-weight: 700;
+            line-height: 1.15;
+            color: var(--primary-strong);
+            text-wrap: balance;
+        }
+
+        .author-meta {
+            display: inline-block;
+            padding: 0.25rem 0.8rem;
+            border-radius: 999px;
+            background: var(--primary-soft);
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .author-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .info-block {
+            padding: 1.15rem 1.25rem;
+            background: var(--primary-soft);
+            border-radius: var(--radius-md);
+            border-left: 4px solid var(--primary);
+            transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+        }
+
+        @media (hover: hover) {
+            .info-block:hover { transform: translateY(-3px); box-shadow: var(--shadow-sm); }
+        }
+
+        .info-block h4 {
+            margin-bottom: 0.45rem;
+            font-family: var(--font-body);
+            font-size: 0.82rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--primary-strong);
+        }
+
+        .info-block p {
+            font-size: 1rem;
+            line-height: 1.65;
+            color: var(--text);
+        }
+
+        .info-block.highlight {
+            background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+            border-left: 0;
+            box-shadow: var(--shadow-primary);
+        }
+
+        .info-block.highlight h4 { color: var(--on-primary); opacity: 0.9; }
+        .info-block.highlight p { color: var(--on-primary); font-weight: 600; }
+
+        @media (prefers-color-scheme: dark) {
+            .info-block.highlight { background: linear-gradient(135deg, var(--primary), #b86ac4); }
+        }
+
+        /* ---------- 7. CONCLUSIONES ---------- */
+        .conclusion-slide { text-align: center; }
+
+        .conclusion-title {
+            font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.2rem);
+            font-weight: 700;
+            line-height: 1.15;
+            color: var(--primary-strong);
+        }
+
+        .conclusion-subtitle {
+            margin-top: 0.4rem;
+            font-family: var(--font-body);
+            font-size: clamp(1rem, 0.95rem + 0.4vw, 1.2rem);
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .conclusion-slide .cover-divider { margin: 1.25rem auto 1.5rem; }
+
+        .conclusion-slide p {
+            font-size: clamp(1rem, 0.95rem + 0.3vw, 1.12rem);
+            line-height: 1.75;
+            color: var(--text);
+            text-align: left;
+        }
+
+        .conclusion-slide p + p { margin-top: 1rem; }
+
+        @media (min-width: 720px) {
+            .conclusion-slide p { text-align: justify; hyphens: auto; }
+        }
+
+        /* ---------- 8. REFERENCIAS ---------- */
+        .ref-title {
+            margin-bottom: 1.5rem;
+            font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.2rem);
+            font-weight: 700;
+            text-align: center;
+            color: var(--primary-strong);
+        }
+
+        .ref-title::after {
+            content: "";
+            display: block;
+            width: 64px;
+            height: 5px;
+            margin: 0.9rem auto 0;
+            border-radius: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .ref-list {
+            padding-left: 2.5rem;
+            text-indent: -2.5rem;
+            font-size: 0.95rem;
+            line-height: 1.65;
+        }
+
+        .ref-list p { overflow-wrap: anywhere; }
+
+        .ref-list p + p {
+            margin-top: 0.9rem;
+            padding-top: 0.9rem;
+            border-top: 1px dashed var(--border);
+        }
+
+        /* ---------- 9. NAVEGACIÓN INFERIOR ---------- */
+        .nav-controls {
+            position: relative;
+            z-index: 20;
+            flex: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem clamp(0.75rem, 3vw, 1.25rem);
+            padding-bottom: calc(0.6rem + env(safe-area-inset-bottom, 0px));
+            background: var(--surface);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid var(--border);
+        }
+
+        .progress-track {
+            flex: 1 1 auto;
+            min-width: 24px;
+            height: 6px;
+            border-radius: 6px;
+            background: var(--primary-soft);
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: width 0.5s var(--ease);
+        }
+
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            min-height: 44px;
+            padding: 0.55rem 1.1rem;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: var(--surface-solid);
+            color: var(--primary-strong);
+            font-weight: 800;
+            font-size: 0.92rem;
+            line-height: 1;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            transition: background-color 0.25s var(--ease), color 0.25s var(--ease),
+                        transform 0.25s var(--ease), box-shadow 0.25s var(--ease),
+                        opacity 0.25s var(--ease);
+        }
+
+        .nav-btn svg { flex: none; transition: transform 0.25s var(--ease); }
+
+        .nav-btn--prev { padding-left: 0.8rem; }
+        .nav-btn--next { padding-right: 0.8rem; }
+
+        .nav-btn:hover:not(:disabled) {
+            background: var(--primary-soft);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+
+        .nav-btn--prev:hover:not(:disabled) svg { transform: translateX(-3px); }
+        .nav-btn--next:hover:not(:disabled) svg { transform: translateX(3px); }
+        .nav-btn:active:not(:disabled) { transform: scale(0.96); }
+
+        .nav-btn--next {
+            border-color: transparent;
+            background: var(--primary);
+            color: var(--on-primary);
+            box-shadow: var(--shadow-primary);
+        }
+
+        .nav-btn--next:hover:not(:disabled) { background: var(--primary-strong); }
+
+        .nav-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .nav-btn--next:disabled {
+            background: var(--surface-solid);
+            border-color: var(--border);
+            color: var(--text-muted);
+        }
+
+        /* ---------- 10. ÍNDICE DESPLEGABLE ---------- */
+        .menu-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 90;
+            background: rgba(25, 10, 30, 0.5);
+            backdrop-filter: blur(3px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.35s var(--ease), visibility 0s linear 0.35s;
+        }
+
+        .menu-overlay.open {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.35s var(--ease), visibility 0s;
+        }
+
+        .index-menu {
+            position: fixed;
+            inset: 0 auto 0 0;
+            z-index: 100;
+            width: min(88%, 340px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: var(--surface-solid);
+            border-right: 1px solid var(--border);
+            box-shadow: var(--shadow-lg);
+            transform: translateX(-102%);
+            visibility: hidden;
+            transition: transform 0.4s var(--ease), visibility 0s linear 0.4s;
+        }
+
+        .index-menu.open {
+            transform: none;
+            visibility: visible;
+            transition: transform 0.4s var(--ease), visibility 0s;
+        }
+
+        .index-header {
+            flex: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.9rem 1rem 0.9rem 1.25rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .index-header h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-strong);
+        }
+
+        .close-menu-btn { font-size: 1.6rem; line-height: 1; }
+
+        .index-content {
+            flex: 1 1 auto;
+            padding: 1.1rem 1rem 1.5rem;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) transparent;
+        }
+
+        .index-section + .index-section { margin-top: 1.25rem; }
+
+        .index-section h3 {
+            margin-bottom: 0.5rem;
+            padding: 0 0.5rem 0.4rem;
+            border-bottom: 1px solid var(--border);
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .index-list { margin: 0; padding: 0; list-style: none; }
+        .index-list li + li { margin-top: 2px; }
+
+        .index-btn {
+            display: block;
+            width: 100%;
+            padding: 0.6rem 0.8rem;
+            border: 0;
+            border-radius: var(--radius-sm);
+            background: transparent;
+            color: var(--text);
+            font-size: 0.95rem;
+            font-weight: 600;
+            line-height: 1.35;
+            text-align: left;
+            cursor: pointer;
+            transition: background-color 0.2s var(--ease), color 0.2s var(--ease), transform 0.2s var(--ease);
+        }
+
+        .index-btn:hover { background: var(--primary-soft); color: var(--primary-strong); transform: translateX(3px); }
+
+        .index-btn.active-index {
+            background: var(--primary-soft);
+            color: var(--primary-strong);
+            font-weight: 800;
+            box-shadow: inset 4px 0 0 var(--primary);
+        }
+
+        /* ---------- 11. RESPONSIVO ---------- */
+        @media (min-width: 640px) {
+            .author-grid { grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+            .info-block.highlight { grid-column: 1 / -1; }
+        }
+
+        @media (max-width: 480px) {
+            .nav-btn { padding: 0.55rem 0.9rem; font-size: 0.88rem; }
+            .nav-controls { gap: 0.5rem; }
+            .slide-content-wrapper::after,
+            .slide-content-wrapper::before { display: none; }
+            .ref-list { padding-left: 1.5rem; text-indent: -1.5rem; font-size: 0.88rem; }
+        }
+
+        /* Marcos de poca altura (iframe corto o móvil horizontal) */
+        @media (max-height: 560px) {
+            .topbar { padding-block: 0.4rem; }
+            .nav-controls { padding-block: 0.4rem; }
+            .icon-btn { width: 38px; height: 38px; }
+            .nav-btn { min-height: 40px; }
+            .slide { padding-block: 0.6rem; }
+            .slide-content-wrapper { padding: 1rem 1.25rem; }
+        }
+
+        /* ---------- ACCESIBILIDAD ---------- */
+        :focus-visible {
+            outline: 3px solid var(--focus);
+            outline-offset: 3px;
+            border-radius: 8px;
+        }
+
+        .slide:focus-visible { outline-offset: -3px; }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+                transition-delay: 0s !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Menú Índice Lateral -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <div class="index-menu" id="indexMenu" role="dialog" aria-modal="true" aria-labelledby="indexTitle">
+        <div class="index-header">
+            <h2 id="indexTitle">Índice</h2>
+            <button type="button" class="close-menu-btn icon-btn" id="closeMenuBtn" aria-label="Cerrar">×</button>
+        </div>
+        <div class="index-content">
+            <div class="index-section">
+                <h3>General</h3>
+                <ul class="index-list">
+                    <li><button type="button" class="index-btn" data-index="0">1. Portada</button></li>
+                </ul>
+            </div>
+            <div class="index-section">
+                <h3>Autores</h3>
+                <ul class="index-list">
+                    <li><button type="button" class="index-btn" data-index="1">2. Juan C. Amador</button></li>
+                    <li><button type="button" class="index-btn" data-index="2">3. Miguel Á. Gómez</button></li>
+                    <li><button type="button" class="index-btn" data-index="3">4. María V. Alzate</button></li>
+                    <li><button type="button" class="index-btn" data-index="4">5. Carmen E. Pedraza</button></li>
+                    <li><button type="button" class="index-btn" data-index="5">6. Sandra M. Morales</button></li>
+                    <li><button type="button" class="index-btn" data-index="6">7. Ileana Enesco</button></li>
+                    <li><button type="button" class="index-btn" data-index="7">8. Lourdes Gaitán</button></li>
+                    <li><button type="button" class="index-btn" data-index="8">9. Yolanda Rodríguez</button></li>
+                    <li><button type="button" class="index-btn" data-index="9">10. Joyce M. Pérez</button></li>
+                    <li><button type="button" class="index-btn" data-index="10">11. Nini J. Villamizar</button></li>
+                </ul>
+            </div>
+            <div class="index-section">
+                <h3>Conclusiones</h3>
+                <ul class="index-list">
+                    <li><button type="button" class="index-btn" data-index="11">12. C1: Comprensión</button></li>
+                    <li><button type="button" class="index-btn" data-index="12">13. C2: Sujetos de Derechos</button></li>
+                    <li><button type="button" class="index-btn" data-index="13">14. C3: Diversidad e Inclusión</button></li>
+                    <li><button type="button" class="index-btn" data-index="14">15. C4: Contextos Sociales</button></li>
+                    <li><button type="button" class="index-btn" data-index="15">16. C5: Aprendizajes</button></li>
+                </ul>
+            </div>
+            <div class="index-section">
+                <h3>Soportes</h3>
+                <ul class="index-list">
+                    <li><button type="button" class="index-btn" data-index="16">17. Referencias APA</button></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header (Indicador y Menú) -->
+    <header class="topbar">
+        <div class="header-left">
+            <button type="button" class="menu-btn icon-btn" id="menuBtn" title="Abrir Índice" aria-label="Abrir Índice" aria-controls="indexMenu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="slide-counter" id="slideCounter" aria-live="polite">1 / 17</div>
+        </div>
+        <button type="button" class="fullscreen-btn icon-btn" id="fullscreenBtn" title="Pantalla Completa" aria-label="Pantalla Completa">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+        </button>
+    </header>
+
+    <!-- ÁREA PRINCIPAL: DIAPOSITIVAS -->
+    <div class="slider-container" id="sliderContainer">
+
+        <!-- Diapositiva 1 -->
+        <div class="slide active">
+<div class="slide-content-wrapper cover-slide">
+<span class="cover-tag">Reto 3</span>
+<h1 class="cover-title">Perspectivas Contemporáneas de las Infancias</h1>
+<div class="cover-divider"></div>
+<h2 class="cover-subtitle">Estudio de Autores Contemporáneos</h2>
+<div class="cover-authors">
+<strong>Integrantes del Equipo</strong>
+<div class="cover-team">
+<span>Nayarit Liseth Doria Villamizara</span>
+<span>Juliana Domínguez Ortega</span>
+<span>Nayelis Acosta Ozuna</span>
+<span>Rosa Ycela Mejía Soraca</span>
+<span>Asly Tatiana Hernandez</span>
+</div>
+
+<span class="cover-institution">UNAD · Licenciatura en Educación Infantil</span>
+</div>
+</div>
+</div>
+
+        <!-- Diapositiva 2 -->
+        <div class="slide">
+<div class="slide-content-wrapper">
+<div class="author-header">
+<h2 class="author-name">Juan Carlos Amador Baquiro</h2>
+<span class="author-meta">2012 • Colombia</span>
+</div>
+<div class="author-grid">
+<div class="info-block">
+<h4>1. Principales Aportes</h4>
+<p>Analiza la infancia como una construcción histórica, social y cultural. Propone comprender las diferentes experiencias infantiles y las condiciones en las que viven los niños y las niñas.</p>
+</div>
+<div class="info-block">
+<h4>2. Aporte al Concepto</h4>
+<p>Reconoce a los menores como sujetos sociales cuyas experiencias están relacionadas con sus contextos históricos. Plantea que la infancia no es una experiencia igual para todos, sino que cambia según las condiciones.</p>
+</div>
+<div class="info-block">
+<h4>3. Incidencia Educativa/Social</h4>
+<p>Invita a reconocer las diferentes realidades infantiles y a reflexionar sobre las prácticas educativas y sociales.</p>
+</div>
+<div class="info-block highlight">
+<h4>4. ¿Cómo entiende las infancias?</h4>
+<p>Como experiencias sociales e históricas diversas que deben comprenderse teniendo en cuenta los contextos donde viven los niños y las niñas.</p>
+</div>
+</div>
+</div>
+</div>
+
+        <!-- Diapositiva 3 -->
+        <div class="slide">
+<div class="slide-content-wrapper">
+<div class="author-header">
+<h2 class="author-name">Miguel Ángel Gómez Mendoza</h2>
+<span class="author-meta">2014 • Colombia</span>
+</div>
+<div class="author-grid">
+<div class="info-block">
+<h4>1. Principales Aportes</h4>
+<p>Estudia las concepciones históricas y sociales de la infancia y las transformaciones en la manera de comprender a los niños y las niñas.</p>
+</div>
+<div class="info-block">
+<h4>2. Aporte al Concepto</h4>
+<p>Permite comprender a los niños como personas cuya posición social ha cambiado a lo largo de la historia. Contribuye a entender la infancia como una realidad influida por ideas sociales e instituciones.</p>
+</div>
+<div class="info-block">
+<h4>3. Incidencia Educativa/Social</h4>
+<p>Promueve la reflexión sobre las prácticas educativas, los derechos infantiles y las representaciones sociales de la niñez.</p>
+</div>
+<div class="info-block highlight">
+<h4>4. ¿Cómo entiende las infancias?</h4>
+<p>Desde una perspectiva histórica y social que reconoce las diferentes maneras de vivir la infancia a través del tiempo.</p>
+</div>
+</div>
+</div>
+</div>
+
+        <!-- Diapositiva 4 -->
+        <div class="slide">
+<div class="slide-content-wrapper">
+<div class="author-header">
+<h2 class="author-name">María Victoria Alzate Piedrahíta</h2>
+<span class="author-meta">2014 • Colombia</span>
+</div>
+<div class="author-grid">
+<div class="info-block">
+<h4>1. Principales Aportes</h4>
+<p>Contribuye al análisis histórico y social de las concepciones de la infancia y de las representaciones que la sociedad construye sobre los niños.</p>
+</div>
+<div class="info-block">
+<h4>2. Aporte al Concepto</h4>
+<p>Permite reflexionar sobre cómo las ideas sociales influyen en la manera de reconocer a los niños. Ayuda a comprender que el concepto se transforma según circunstancias históricas y culturales.</p>
+</div>
+<div class="info-block">
+<h4>3. Incidencia Educativa/Social</h4>
+<p>Invita a revisar las prácticas educativas y a reconocer los derechos y las experiencias vivenciales de los niños.</p>
+</div>
+<div class="info-block highlight">
+<h4>4. ¿Cómo entiende las infancias?</h4>
+<p>Desde una perspectiva histórica y social que reconoce y valida la inmensa diversidad de las experiencias infantiles.</p>
+</div>
+</div>
+</div>
+</div>
+
+        <!-- Diapositiva 5 -->
+        <div class="slide">
+<div class="slide-content-wrapper">
+<div class="author-header">
+<h2 class="author-name">Carmen Eugenia Pedraza Ramírez</h2>
+<span class="author-meta">2022 • Colombia</span>
+</div>
+<div class="author-grid">
+<div class="info-block">
+<h4>1. Principales Aportes</h4>
+<p>Estudia las representaciones sobre la educación infantil y las experiencias de las infancias en contextos de contingencia.</p>
+</div>
+<div class="info-block">
+<h4>2. Aporte al Concepto</h4>
+<p>Permite comprender a los niños a partir de sus relaciones y cotidianidad. Contribuye a reconocer que las infancias se viven distinto según condiciones familiares, escolares y sociales.</p>
+</div>
+<div class="info-block">
+<h4>3. Incidencia Educativa/Social</h4>
+<p>Invita a reflexionar sobre las prácticas pedagógicas y sobre la importancia vital de responder a las necesidades particulares de los niños.</p>
+</div>
+<div class="info-block highlight">
+<h4>4. ¿Cómo entiende las infancias?</h4>
+<p>Desde una perspectiva social y contextual, intrínsecamente relacionada con las experiencias infantiles y representaciones educativas.</p>
+</div>
+</div>
+</div>
+</div>
+
+        <!-- Diapositiva 6 -->
+        <div class="slide">
+<div class="slide-content-wrapper">
+<div class="author-header">
+<h2 class="author-name">Sandra Milena Morales Mantilla</h2>
+<span class="author-meta">2022 • Colombia</span>
+</div>
+<div class="author-grid">
+<div class="info-block">
+<h4>1. Principales Aportes</h4>
+<p>Aborda las representaciones sobre la educación infantil y las experiencias de los niños y niñas en situaciones de contingencia y cambio.</p>
+</div>
+<div class="info-block">
+<h4>2. Aporte al Concepto</h4>
+<p>Destaca la importancia de reconocer sentimientos y opiniones infantiles. Contribuye a comprender las infancias a partir de las experiencias vividas en contextos familiares y sociales.</p>
+</div>
+<div class="info-block">
+<h4>3. Incidencia Educativa/Social</h4>
+<p>Invita a fortalecer el acompañamiento familiar, escuchar activamente las voces infantiles y replantear las prácticas pedagógicas.</p>
+</div>
+<div class="info-block highlight">
+<h4>4. ¿Cómo entiende las infancias?</h4>
+<p>Como experiencias diversas que deben comprenderse teniendo en cuenta obligatoriamente los contextos cotidianos de los menores.</p>
+</div>
+</div>
+</div>
+</div>
+
+        <!-- Diapositiva 7 -->
+        <div class="slide">
+<div class="slide-content-wrapper">
+<div class="author-header">
+<h2 class="author-name">Ileana Enesco</h2>
+<span class="author-meta">2010 • Psicóloga Investigadora</span>
+</div>
+<div class="author-grid">
+<div class="info-block">
+<h4>1. Principales Aportes</h4>
+<p>Explica la evolución histórica del concepto de infancia y analiza cómo las sociedades han comprendido a los niños y niñas en diferentes épocas.</p>
+</div>
+<div class="info-block">
+<h4>2. Aporte al Concepto</h4>
+<p>Destaca la importancia de comprender características propias de la infancia para orientar su desarrollo. Las ideas sobre la infancia cambian con las creencias y condiciones de cada sociedad.</p>
+</div>
+<div class="info-block">
+<h4>3. Incidencia Educativa/Social</h4>
+<p>Invita a reflexionar sobre las prácticas de crianza en el hogar, la educación formal y el reconocimiento real de las necesidades infantiles.</p>
+</div>
+<div class="info-block highlight">
+<h4>4. ¿Cómo entiende las infancias?</h4>
+<p>Desde una perspectiva estrictamente histórica y social, considerando las transformaciones culturales y educativas de cada época particular.</p>
+</div>
+</div>
+</div>
+</div>
+
+        <!-- Diapositiva 8 -->
+        <div class="slide">
+<div class="slide-content-wrapper">
+<div class="author-header">
+<h2 class="author-name">Lourdes Gaitán Muñoz</h2>
+<span class="author-meta">2010 • Socióloga Investigadora</span>
+</div>
+<div class="author-grid">
+<div class="info-block">
+<h4>1. Principales Aportes</h4>
+<p>Estudia las experiencias en la sociedad contemporánea y promueve la comprensión sociológica de la infancia desde la perspectiva de los propios niños.</p>
+</div>
+<div class="info-block">
+<h4>2. Aporte al Concepto</h4>
+<p>Reconoce a los niños como "actores sociales" cuyas vivencias merecen ser escuchadas. La infancia es una realidad social que se transforma junto con los cambios de la sociedad.</p>
+</div>
+<div class="info-block">
+<h4>3. Incidencia Educativa/Social</h4>
+<p>Invita a escuchar a los niños, dar valor a sus experiencias cotidianas y promover su participación activa en los espacios sociales y educativos.</p>
+</div>
+<div class="info-block highlight">
+<h4>4. ¿Cómo entiende las infancias?</h4>
+<p>Como experiencias sociales genuinas que deben analizarse considerando las condiciones de vida materiales y las perspectivas propias de los niños.</p>
+</div>
+</div>
+</div>
+</div>
+
+        <!-- Diapositiva 9 -->
+        <div class="slide">
+<div class="slide-content-wrapper">
+<div class="author-header">
+<h2 class="author-name">Yolanda Rodríguez Bernal</h2>
+<span class="author-meta">2022 • Colombia</span>
+</div>
+<div class="author-grid">
+<div class="info-block">
+<h4>1. Principales Aportes</h4>
+<p>Estudia las representaciones sociales arraigadas sobre las infancias y la educación infantil en contextos de contingencia e incertidumbre.</p>
+</div>
+<div class="info-block">
+<h4>2. Aporte al Concepto</h4>
+<p>Permite comprender a los niños en relación directa con sus entornos. Contribuye a reconocer que existen diferentes experiencias infantiles moldeadas por las condiciones sociales.</p>
+</div>
+<div class="info-block">
+<h4>3. Incidencia Educativa/Social</h4>
+<p>Invita a analizar críticamente las prácticas educativas y a considerar las necesidades infantiles en situaciones que transforman la vida cotidiana de un momento a otro.</p>
+</div>
+<div class="info-block highlight">
+<h4>4. ¿Cómo entiende las infancias?</h4>
+<p>Desde una perspectiva netamente contextual y social, que reconoce, acepta y valora la enorme diversidad de experiencias de los menores.</p>
+</div>
+</div>
+</div>
+</div>
+
+        <!-- Diapositiva 10 -->
+        <div class="slide">
+<div class="slide-content-wrapper">
+<div class="author-header">
+<h2 class="author-name">Joyce Mildred Pérez Ospina</h2>
+<span class="author-meta">2022 • Colombia</span>
+</div>
+<div class="author-grid">
+<div class="info-block">
+<h4>1. Principales Aportes</h4>
+<p>Aporta a la literatura académica sobre las representaciones de la educación infantil y cómo las infancias transitan y sobreviven a situaciones de contingencia.</p>
+</div>
+<div class="info-block">
+<h4>2. Aporte al Concepto</h4>
+<p>Destaca la importancia de comprender los sentimientos y relaciones. Reconoce que las infancias son diversas y dependen de las condiciones familiares y educativas que las rodean.</p>
+</div>
+<div class="info-block">
+<h4>3. Incidencia Educativa/Social</h4>
+<p>Promueve la reflexión profunda sobre el rol de la educación infantil y la importancia vital de comprender las experiencias de los niños dentro de sus ecosistemas.</p>
+</div>
+<div class="info-block highlight">
+<h4>4. ¿Cómo entiende las infancias?</h4>
+<p>Como un abanico de experiencias diversas directamente relacionadas con la calidad y naturaleza de los entornos donde viven y aprenden.</p>
+</div>
+</div>
+</div>
+</div>
+
+        <!-- Diapositiva 11 -->
+        <div class="slide">
+<div class="slide-content-wrapper">
+<div class="author-header">
+<h2 class="author-name">Nini Johana Villamizar Parada</h2>
+<span class="author-meta">2022 • Colombia</span>
+</div>
+<div class="author-grid">
+<div class="info-block">
+<h4>1. Principales Aportes</h4>
+<p>Enfoca su estudio investigativo en desentrañar las representaciones sobre la educación inicial y las infancias inmersas en contextos de contingencia.</p>
+</div>
+<div class="info-block">
+<h4>2. Aporte al Concepto</h4>
+<p>Comprende a los niños como personas cuyas vivencias están atadas a su entorno escolar y social. Sus experiencias se transforman según las circunstancias que deban afrontar.</p>
+</div>
+<div class="info-block">
+<h4>3. Incidencia Educativa/Social</h4>
+<p>Invita a reflexionar seriamente sobre la pertinencia de las prácticas pedagógicas y la necesidad imperiosa de comprender las realidades cotidianas.</p>
+</div>
+<div class="info-block highlight">
+<h4>4. ¿Cómo entiende las infancias?</h4>
+<p>Desde una perspectiva eminentemente social y contextual, que no aísla las experiencias infantiles de las circunstancias sociopolíticas en las que se desarrollan.</p>
+</div>
+</div>
+</div>
+</div>
+
+        <!-- Diapositiva 12 -->
+        <div class="slide">
+<div class="slide-content-wrapper conclusion-slide">
+<h2 class="serif-text conclusion-title">Conclusión 1</h2>
+<h3 class="conclusion-subtitle">Comprensión de las infancias contemporáneas</h3>
+<div class="cover-divider"></div>
+<p>En conclusión, los aportes de los diez autores estudiados permiten comprender que la infancia ha experimentado importantes transformaciones a lo largo de la historia y que está influenciada por factores sociales, culturales, políticos, económicos y tecnológicos. A diferencia de las concepciones tradicionales, que consideraban a los niños y las niñas principalmente como futuros adultos, las perspectivas contemporáneas los reconocen como sujetos de derechos, con identidad propia, capacidades, necesidades y formas particulares de comprender el mundo.</p>
+
+<p>Asimismo, se reconoce que no existe una única manera de vivir la infancia, pues cada niño y niña desarrolla sus experiencias de acuerdo con su contexto familiar y social. Por esta razón, es fundamental que los docentes en formación promuevan prácticas pedagógicas inclusivas, participativas y respetuosas de la diversidad, que garanticen los derechos de la niñez y favorezcan su desarrollo integral. De esta manera, comprender las infancias contemporáneas permite reflexionar sobre la responsabilidad de la familia, la escuela y la sociedad en la construcción de entornos seguros, equitativos y enriquecedores.</p>
+</div>
+</div>
+
+        <!-- Diapositiva 13 -->
+        <div class="slide">
+<div class="slide-content-wrapper conclusion-slide">
+<h2 class="serif-text conclusion-title">Conclusión 2</h2>
+<h3 class="conclusion-subtitle">Niños y niñas como sujetos de derechos</h3>
+<div class="cover-divider"></div>
+<p>A partir del análisis de los diez autores contemporáneos estudiados, se comprende que la manera de entender la infancia ha cambiado a lo largo de la historia. Los niños y las niñas han dejado de ser vistos únicamente como personas que necesitan el cuidado y la orientación de los adultos, para ser reconocidos como sujetos de derechos, con identidad propia, capacidades, opiniones y formas particulares de comprender el mundo.</p>
+
+<p>De igual manera, este análisis permite reflexionar sobre la importancia de garantizar sus derechos, escuchar sus voces y promover su participación en los diferentes espacios en los que se desarrollan. La familia, la escuela y la sociedad cumplen un papel fundamental en la protección de su dignidad, el respeto por sus diferencias y la creación de oportunidades para su desarrollo integral.</p>
+
+<p>Finalmente, como futuras licenciadas en Educación Infantil, este aprendizaje nos invita a transformar nuestras prácticas pedagógicas, promoviendo ambientes educativos inclusivos, respetuosos y participativos, basados en la equidad y el reconocimiento activo de los niños.</p>
+</div>
+</div>
+
+        <!-- Diapositiva 14 -->
+        <div class="slide">
+<div class="slide-content-wrapper conclusion-slide">
+<h2 class="serif-text conclusion-title">Conclusión 3</h2>
+<h3 class="conclusion-subtitle">Diversidad, inclusión y equidad</h3>
+<div class="cover-divider"></div>
+<p>Teniendo en cuenta los aportes estudiados, comprendemos que cada niño y niña vive una infancia diferente, de acuerdo con sus experiencias, características, necesidades y contextos sociales y culturales. Estas perspectivas nos permiten reconocer la importancia de respetar la diversidad de las infancias, valorando las diferencias individuales y garantizando que todos sean reconocidos como sujetos de derechos, sin importar sus condiciones.</p>
+
+<p>Asimismo, nos invitan a reflexionar sobre la necesidad de construir prácticas educativas inclusivas y equitativas, en las que se brinden las mismas oportunidades de aprendizaje, participación y desarrollo integral. Por esta razón, debemos promover ambientes educativos donde prevalezcan el respeto, la igualdad, la empatía y la participación, evitando cualquier forma de discriminación o exclusión para que todos logren un desarrollo pleno.</p>
+</div>
+</div>
+
+        <!-- Diapositiva 15 -->
+        <div class="slide">
+<div class="slide-content-wrapper conclusion-slide">
+<h2 class="serif-text conclusion-title">Conclusión 4</h2>
+<h3 class="conclusion-subtitle">Contextos educativos y sociales</h3>
+<div class="cover-divider"></div>
+<p>Los aportes de los autores contemporáneos permiten comprender que las infancias están profundamente influenciadas por los contextos familiares, educativos, sociales y culturales en los que crecen los niños y las niñas.</p>
+
+<p>Cada uno vive experiencias diferentes que pueden favorecer o dificultar su desarrollo integral, especialmente cuando se presentan situaciones de desigualdad, exclusión, falta de oportunidades educativas o vulneración de sus derechos. Es fundamental que la familia, la escuela y la sociedad trabajen conjuntamente para brindar espacios seguros, inclusivos y participativos, donde se respeten las diferencias y se escuchen genuinamente las voces de los niños y las niñas.</p>
+
+<p>De esta manera, se reconoce que todas las infancias merecen las mismas oportunidades para aprender, participar y desarrollarse plenamente, sin importar sus condiciones sociales, económicas o el lugar donde viven.</p>
+</div>
+</div>
+
+        <!-- Diapositiva 16 -->
+        <div class="slide">
+<div class="slide-content-wrapper conclusion-slide">
+<h2 class="serif-text conclusion-title">Conclusión 5</h2>
+<h3 class="conclusion-subtitle">Aprendizajes del grupo</h3>
+<div class="cover-divider"></div>
+<p>A partir del análisis de los diez autores estudiados, comprendimos que la infancia es una etapa diversa que debe entenderse teniendo en cuenta las experiencias, necesidades y contextos sociales, culturales e históricos de cada niño y niña.</p>
+
+<p>Sus aportes nos permitieron reflexionar sobre la importancia de reconocer a los niños y las niñas como sujetos de derechos, respetar sus diferencias individuales y promover una educación inclusiva que favorezca su desarrollo integral. Las visiones adultocéntricas tradicionales deben ceder paso a un acompañamiento guiado por el respeto y la empatía.</p>
+
+<p>Asimismo, aprendimos que, como futuros licenciados en Educación Infantil, debemos desarrollar prácticas pedagógicas sensibles, reflexivas y equitativas, que respondan a las particularidades de cada infancia y contribuyan activamente a su bienestar, aprendizaje y participación en la sociedad contemporánea.</p>
+</div>
+</div>
+
+        <!-- Diapositiva 17 -->
+        <div class="slide">
+<div class="slide-content-wrapper">
+<h2 class="serif-text ref-title">Referencias Bibliográficas</h2>
+<div class="ref-list">
+<p>Amador Baquiro, J. C. (2012). Condición infantil contemporánea: hacia una epistemología de las infancias. <em>Pedagogía y Saberes</em>, (37), 73–87. https://doi.org/10.17227/01212494.37pys73.87</p>
+<p>Enesco, I. (2010). <em>El concepto de infancia a lo largo de la historia</em>. [Artículo]. Repositorio Institucional UNAD. pp. 3-4. https://repository.unad.edu.co/handle/10596/4865</p>
+<p>Gómez-Mendoza, M. Á., &amp; Alzate-Piedrahíta, M. V. (2014). La infancia contemporánea. <em>Revista Latinoamericana de Ciencias Sociales, Niñez y Juventud</em>, 12(1), 77–89. https://doi.org/10.11600/1692715x.1213040513</p>
+<p>Kluwer, W. (II.). (2010). <em>Cuadernos de Pedagogía (407): La infancia hoy ¿Cómo está cambiando?</em>: (ed.). WK - Cuadernos de Pedagogía, Ser niño en el siglo XXI. pp. 14-18. https://elibronet.bibliotecavirtual.unad.edu.co/es/lc/unadwkeducacion/titulos/172687</p>
+<p>Pedraza Ramírez, C. E., Morales Mantilla, S. M., Gómez Bohórquez, P. T., Rodríguez Bernal, Y., Pérez Ospina, J. M., &amp; Villamizar Parada, N. J. (2022). <em>Representaciones sobre la educación infantil: infancias en contingencia</em>. Sello Editorial UNAD. https://doi.org/10.22490/9789586518710</p>
+</div>
+</div>
+</div>
+
+    </div>
+
+    <!-- Controles de Navegación Inferior -->
+    <div class="nav-controls">
+        <button type="button" class="nav-btn nav-btn--prev" id="btnPrev">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 18l-6-6 6-6"/></svg> Anterior
+        </button>
+        <div class="progress-track" aria-hidden="true">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <button type="button" class="nav-btn nav-btn--next" id="btnNext">
+            Siguiente <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+    </div>
+
+    <script>
+    (() => {
+        'use strict';
+
+        const slides         = Array.from(document.querySelectorAll('.slide'));
+        const indexBtns      = Array.from(document.querySelectorAll('.index-btn'));
+        const btnPrev        = document.getElementById('btnPrev');
+        const btnNext        = document.getElementById('btnNext');
+        const slideCounter   = document.getElementById('slideCounter');
+        const progressBar    = document.getElementById('progressBar');
+        const indexMenu      = document.getElementById('indexMenu');
+        const menuOverlay    = document.getElementById('menuOverlay');
+        const menuBtn        = document.getElementById('menuBtn');
+        const closeMenuBtn   = document.getElementById('closeMenuBtn');
+        const fullscreenBtn  = document.getElementById('fullscreenBtn');
+        const sliderContainer = document.getElementById('sliderContainer');
+
+        let currentSlideIndex = 0;
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        const isMenuOpen = () => indexMenu.classList.contains('open');
+
+        /* ---------- Estado visual de las diapositivas ----------
+           .active  → visible
+           .before  → ya pasó (sale/entra por la izquierda)
+           sin clase → falta por ver (sale/entra por la derecha) */
+        function updateUI() {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === currentSlideIndex);
+                slide.classList.toggle('before', i < currentSlideIndex);
+                slide.setAttribute('aria-hidden', String(i !== currentSlideIndex));
+                slide.tabIndex = i === currentSlideIndex ? 0 : -1;
+            });
+
+            btnPrev.disabled = currentSlideIndex === 0;
+            btnNext.disabled = currentSlideIndex === slides.length - 1;
+
+            slideCounter.textContent = `${currentSlideIndex + 1} / ${slides.length}`;
+
+            const progress = (currentSlideIndex / (slides.length - 1)) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            indexBtns.forEach((btn, idx) => {
+                const active = idx === currentSlideIndex;
+                btn.classList.toggle('active-index', active);
+                if (active) btn.setAttribute('aria-current', 'true');
+                else btn.removeAttribute('aria-current');
+            });
+        }
+
+        function goToSlide(index) {
+            if (index < 0 || index >= slides.length) return;
+
+            currentSlideIndex = index;
+            if (isMenuOpen()) toggleMenu();
+
+            updateUI();
+            slides[currentSlideIndex].scrollTop = 0;
+        }
+
+        function changeSlide(direction) {
+            const newIndex = currentSlideIndex + direction;
+            if (newIndex >= 0 && newIndex < slides.length) {
+                goToSlide(newIndex);
+            }
+        }
+
+        /* ---------- Índice desplegable ---------- */
+        function toggleMenu() {
+            const open = !isMenuOpen();
+            indexMenu.classList.toggle('open', open);
+            menuOverlay.classList.toggle('open', open);
+            menuBtn.setAttribute('aria-expanded', String(open));
+
+            if (open) {
+                const current = indexBtns[currentSlideIndex] || closeMenuBtn;
+                current.focus({ preventScroll: true });
+            } else {
+                menuBtn.focus({ preventScroll: true });
+            }
+        }
+
+        /* ---------- Pantalla completa ---------- */
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log(`Error: ${err.message}`);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        /* ---------- Eventos ---------- */
+        btnPrev.addEventListener('click', () => changeSlide(-1));
+        btnNext.addEventListener('click', () => changeSlide(1));
+        menuBtn.addEventListener('click', toggleMenu);
+        closeMenuBtn.addEventListener('click', toggleMenu);
+        menuOverlay.addEventListener('click', toggleMenu);
+        fullscreenBtn.addEventListener('click', toggleFullScreen);
+        indexBtns.forEach((btn, i) => btn.addEventListener('click', () => goToSlide(i)));
+
+        // Deslizar con el dedo (solo si el gesto es más horizontal que vertical)
+        sliderContainer.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+
+        sliderContainer.addEventListener('touchend', e => {
+            const dx = e.changedTouches[0].screenX - touchStartX;
+            const dy = e.changedTouches[0].screenY - touchStartY;
+            const swipeThreshold = 50;
+
+            if (Math.abs(dx) < swipeThreshold || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+            changeSlide(dx < 0 ? 1 : -1);
+        }, { passive: true });
+
+        document.addEventListener('keydown', (e) => {
+            if (isMenuOpen()) {
+                if (e.key === 'Escape') { toggleMenu(); return; }
+
+                // Mantener el foco dentro del índice mientras está abierto
+                if (e.key === 'Tab') {
+                    const focusables = Array.from(indexMenu.querySelectorAll('button'));
+                    const first = focusables[0];
+                    const last = focusables[focusables.length - 1];
+                    if (e.shiftKey && document.activeElement === first) {
+                        e.preventDefault(); last.focus();
+                    } else if (!e.shiftKey && document.activeElement === last) {
+                        e.preventDefault(); first.focus();
+                    }
+                }
+                return;
+            }
+
+            if (e.key === 'ArrowRight') changeSlide(1);
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'Home') goToSlide(0);
+            if (e.key === 'End') goToSlide(slides.length - 1);
+        });
+
+        // Se conservan accesibles por si otra página las invoca
+        Object.assign(window, { changeSlide, goToSlide, toggleMenu, toggleFullScreen });
+
+        updateUI();
+    })();
+    </script>
+</body>
+</html>
